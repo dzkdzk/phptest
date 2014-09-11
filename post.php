@@ -19,18 +19,27 @@ HTML;
         <br />
         $fullpost->text
         <br />
-        $fullpost->tail
+        Автор: $fullpost->tail
+        <br />
+        Теги: 
+HTML;
+            for ($i=0;$i<count($fullpost->tags);$i++) {
+                $tagid=$fullpost->tags[$i]["id"];
+                echo "<a href=tag.php?tag=$tagid>" . $fullpost->tags[$i]["tag"] . "</a>" . " ";
+            }
+        
+        echo <<<HTML
         <br />
         </div>
 HTML;
-if (isset($_COOKIE['username'])){    
-echo <<<HTML
+        if (isset($_COOKIE['username'])) {
+            echo <<<HTML
         <a href='edit.php?id=$fullpost->postid'>Редактировать...</a>
         <br />
         <a href='index.php' onclick='$.post( "edit.php", { del_id: $fullpost->postid } );'>Удалить</a>
              
 HTML;
-    }
+        }
     }
 
 }

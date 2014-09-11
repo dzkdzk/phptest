@@ -15,9 +15,9 @@ class Auth {
 
     function Login($db, $username, $password) {
 
-        $sessandid= $db->getNewSessionHashAndUserID($username, $password);
-        $newsesshash =$sessandid['hash'];
-        $userid =$sessandid['userid'];        
+        $sessandid = $db->getNewSessionHashAndUserID($username, $password);
+        $newsesshash = $sessandid['hash'];
+        $userid = $sessandid['userid'];
         if ($newsesshash == FALSE) {
             //уведомление!!!   
         } else {

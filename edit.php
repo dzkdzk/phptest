@@ -15,28 +15,28 @@ class PostPage extends HTMLPage {
     function MainText() {
 
         $fullpost = new SinglePost();
-
+        $this->postauthorid = $_COOKIE['userid'];
+        $this->postauthorname = $_COOKIE['username'];
+        $this->hashsess = $_COOKIE['hashsess'];
         echo <<<HTML
         <p>Добро пожаловать в Блог для Всех</p>
         <div class='article'>
 HTML;
         if (isset($_POST['del_id'])) {
             $this->postid = $_POST['del_id'];
-            $fullpost->delPost($this->postid);
+            $fullpost->delPost($this->postid, $this->postauthorid, $this->hashsess);
             header('Location: index.php');
             exit();
         } else {
             $this->postid = $_GET['id'];
         }
-        $this->postauthorid = $_COOKIE['userid'];
-        $this->postauthorname = $_COOKIE['username'];
-        $this->hashsess = $_COOKIE['hashsess'];
+
         if (isset($_POST['SavePost'])) {
             $this->postid = $_POST['postid'];
             $this->posttitle = $_POST['inptitle'];
             $this->posttext = $_POST['inptext'];
             if ($this->postid == 'new') {
-                $this->postid = $fullpost->addPost($this->postauthorid, $this->posttitle, $this->posttext);
+                $this->postid = $fullpost->addPost($this->posttitle, $this->posttext, $this->postauthorid, $this->hashsess);
             } else {
                 $fullpost->editPost($this->postid, $this->posttitle, $this->posttext, $this->postauthorid, $this->hashsess);
             }

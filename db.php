@@ -75,8 +75,23 @@ class MySQLdata {
         if ($sqlresult = $this->mysqli->query($sqlquery)) {
             $row = $sqlresult->fetch_assoc();
         }
-        return $row;
         $this->disconnect();
+        return $row;
+    }
+
+    function getPostTags($postid) {
+        $res=False;
+        $this->connect();
+        $sqlquery = "select tags.id,tags.tag from posts inner join tags inner join tagbp on tags.id=tagbp.tagid and posts.id=tagbp.postid where posts.id=$postid";
+        $sqlresult = $this->mysqli->query($sqlquery);
+        if ($sqlresult->num_rows>0) {
+            while ($row = $sqlresult->fetch_assoc()) {
+                $tablerow[] = $row;
+            }
+            $res=$tablerow;
+        }
+        $this->disconnect();
+        return $res;
     }
 
     function updatePost($postid, $title, $text, $userid, $hashsess) {
@@ -86,18 +101,18 @@ class MySQLdata {
         $this->disconnect();
     }
 
-    function newPost($userid, $title, $text) {
+    function newPost($title, $text, $userid, $hashsess) {
         $this->connect();
-        $sqlquery = "INSERT INTO posts (userid, title, text) VALUES ($userid, '$title', '$text')";
+        $sqlquery = "insert into posts (userid,text,title) select users.id,'$text' as text,'$title' as title from users where users.id=$userid and users.sesshash='$hashsess'";
         $sqlresult = $this->mysqli->query($sqlquery);
         $res = $this->mysqli->insert_id;
         $this->disconnect();
         return $res;
     }
 
-    function erasePost($postid) {
+    function erasePost($postid, $userid, $hashsess) {
         $this->connect();
-        $sqlquery = "DELETE from posts WHERE `id`= '$postid'";
+        $sqlquery = "DELETE from tempposts using `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=1 and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
         $sqlresult = $this->mysqli->query($sqlquery);
         $this->disconnect();
     }

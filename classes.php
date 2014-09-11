@@ -13,9 +13,9 @@ interface postManage {
 
     function editPost($postid, $title, $text, $userid, $hashsess);
 
-    function addPost($userid, $title, $text);
+    function addPost($title, $text, $userid, $hashsess);
 
-    function delPost($postid);
+    function delPost($postid, $userid, $hashsess);
 }
 
 class Articles {
@@ -25,6 +25,7 @@ class Articles {
     public $tail;
     public $text;
     public $postid;
+    public $tags;
 
 }
 
@@ -56,6 +57,7 @@ class SinglePost extends Articles implements postManage {
         $this->text = $res['text'];
         $this->tail = $res['login'];
         $this->postid = $res['id'];
+        $this->tags=$db->getPostTags($postid);
     }
 
     function editPost($postid, $title, $text, $userid, $hashsess) {
@@ -63,15 +65,15 @@ class SinglePost extends Articles implements postManage {
         $db->updatePost($postid, $title, $text, $userid, $hashsess);
     }
 
-    function addPost($userid, $title, $text) {
+    function addPost($title, $text, $userid, $hashsess) {
         $db = new MySQLdata();
-        $res = $db->newPost($userid, $title, $text);
+        $res = $db->newPost($title, $text, $userid, $hashsess);
         return $res;
     }
 
-    function delPost($postid) {
+    function delPost($postid, $userid, $hashsess) {
         $db = new MySQLdata();
-        $db->erasePost($postid);
+        $db->erasePost($postid, $userid, $hashsess);
     }
 
 }
