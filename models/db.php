@@ -55,12 +55,22 @@ class MySQLdata {
 
     private function getHash($target) {
         $salt = 'saltlake';
-        $hash = hash(sha256, $target . $salt);
+        $hash = hash('sha256', $target . $salt);
         return $hash;
     }
 
     function getPrePosts($offset, $rowcount, $previewlength) {
-        $sqlquery = "SELECT posts.id,login,CAST(text as char($previewlength))as text,title FROM `posts` inner join `users` on posts.userid=users.id LIMIT $offset,$rowcount";
+        $sqlquery = "SELECT posts.id,login,CAST(text as char($previewlength))as text,title,date FROM `posts` inner join `users` on posts.userid=users.id LIMIT $offset,$rowcount";
+        if ($sqlresult = $this->mysqli->query($sqlquery)) {
+            while ($row = $sqlresult->fetch_assoc()) {
+                $tablerow[] = $row;
+            }
+        }
+        return $tablerow;
+    }
+
+    function getPrePostsByTag($offset, $rowcount, $previewlength, $tag) {
+        $sqlquery = "SELECT posts.id,login,CAST(text as char($previewlength))as text,title,date from posts inner join tagbp inner join tags inner join `users` on posts.userid=users.id and posts.id=tagbp.postid and tagbp.tagid=tags.id where tags.id=$tag LIMIT $offset,$rowcount";
         if ($sqlresult = $this->mysqli->query($sqlquery)) {
             while ($row = $sqlresult->fetch_assoc()) {
                 $tablerow[] = $row;
@@ -71,7 +81,7 @@ class MySQLdata {
 
     function getPost($postid) {
         $this->connect();
-        $sqlquery = "SELECT posts.id,login,text,title FROM `posts` inner join `users` on posts.userid=users.id WHERE posts.id=$postid";
+        $sqlquery = "SELECT posts.id,login,text,title,date FROM `posts` inner join `users` on posts.userid=users.id WHERE posts.id=$postid";
         if ($sqlresult = $this->mysqli->query($sqlquery)) {
             $row = $sqlresult->fetch_assoc();
         }
@@ -80,15 +90,15 @@ class MySQLdata {
     }
 
     function getPostTags($postid) {
-        $res=False;
+        $res = False;
         $this->connect();
         $sqlquery = "select tags.id,tags.tag from posts inner join tags inner join tagbp on tags.id=tagbp.tagid and posts.id=tagbp.postid where posts.id=$postid";
         $sqlresult = $this->mysqli->query($sqlquery);
-        if ($sqlresult->num_rows>0) {
+        if ($sqlresult->num_rows > 0) {
             while ($row = $sqlresult->fetch_assoc()) {
                 $tablerow[] = $row;
             }
-            $res=$tablerow;
+            $res = $tablerow;
         }
         $this->disconnect();
         return $res;
@@ -96,14 +106,16 @@ class MySQLdata {
 
     function updatePost($postid, $title, $text, $userid, $hashsess) {
         $this->connect();
-        $sqlquery = "UPDATE `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid SET `title` = '$title', `text` = '$text' where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=1 and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
+        $now = time();
+        $sqlquery = "UPDATE `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid SET `title` = '$title', `text` = '$text', `date` = '$now' where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=1 and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
         $sqlresult = $this->mysqli->query($sqlquery);
         $this->disconnect();
     }
 
     function newPost($title, $text, $userid, $hashsess) {
         $this->connect();
-        $sqlquery = "insert into posts (userid,text,title) select users.id,'$text' as text,'$title' as title from users where users.id=$userid and users.sesshash='$hashsess'";
+        $now = time();
+        $sqlquery = "insert into posts (userid,text,title,date) select users.id,'$text' as text,'$title' as title, '$now' as date from users where users.id=$userid and users.sesshash='$hashsess'";
         $sqlresult = $this->mysqli->query($sqlquery);
         $res = $this->mysqli->insert_id;
         $this->disconnect();
@@ -117,10 +129,13 @@ class MySQLdata {
         $this->disconnect();
     }
 
-    function getPostAmount() {
+    function getPostAmount($tag) {
         $this->connect();
-
-        $sqlquery = "SELECT COUNT(*) FROM posts";
+        if ($tag) {
+            $sqlquery = "SELECT COUNT(*) from posts inner join tagbp inner join tags inner join `users` on posts.userid=users.id and posts.id=tagbp.postid and tagbp.tagid=tags.id where tags.id='$tag'";
+        } else {
+            $sqlquery = "SELECT COUNT(*) FROM posts";
+        }
         if ($sqlresult = $this->mysqli->query($sqlquery)) {
             $row = $sqlresult->fetch_row();
         }

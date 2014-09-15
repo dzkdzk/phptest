@@ -4,7 +4,9 @@ include_once("db.php");
 
 interface getPosts {
 
-    function getBlockPost($offset, $rowcount);
+    function getBlockPost($offset, $rowcount, $tag);
+
+    function getBlockTags($postid);
 }
 
 interface postManage {
@@ -31,11 +33,15 @@ class Articles {
 
 class ArticlesBlock extends Articles implements getPosts {
 
-    function getBlockPost($offset, $rowcount) {
-        $previewlength = 500;                         //!!!!!Вынести в настройки
+    function getBlockPost($offset, $rowcount, $tag) {
+
         $db = new MySQLdata();
         $db->connect();
-        $res = $db->getPrePosts($offset, $rowcount, $previewlength);
+        if ($tag) {
+            $res = $db->getPrePostsByTag($offset, $rowcount, previewlength, $tag);
+        } else {
+            $res = $db->getPrePosts($offset, $rowcount, previewlength);
+        }
         $db->disconnect();
         $this->datastruct = $res;
         foreach ($this->datastruct as $item) {
@@ -43,7 +49,13 @@ class ArticlesBlock extends Articles implements getPosts {
             $this->text[] = $item['text'];
             $this->tail[] = $item['login'];
             $this->postid[] = $item['id'];
+            $this->date[] = $item['date'];
         }
+    }
+
+    function getBlockTags($postid) {
+        $db = new MySQLdata();
+        $this->tags[] = $db->getPostTags($postid);
     }
 
 }
@@ -57,7 +69,8 @@ class SinglePost extends Articles implements postManage {
         $this->text = $res['text'];
         $this->tail = $res['login'];
         $this->postid = $res['id'];
-        $this->tags=$db->getPostTags($postid);
+        $this->date = $res['date'];
+        $this->tags = $db->getPostTags($postid);
     }
 
     function editPost($postid, $title, $text, $userid, $hashsess) {
@@ -82,17 +95,17 @@ class navigator {
 
     var $currentpage;
     var $postamount;
-    var $postsonpage = 5;
+    var $postsonpage = postsonpage;
     var $pagesamount;
 
-    public function __construct() {
-        if (!isset($_GET['curpage'])) {
-            $this->currentpage = 1;
+    public function __construct($curpage, $tag) {
+        if ($curpage) {
+            $this->currentpage = $curpage;
         } else {
-            $this->currentpage = $_GET['curpage'];
+            $this->currentpage = 1;
         }
         $db = new MySQLdata();
-        $this->postamount = $db->getPostAmount();
+        $this->postamount = $db->getPostAmount($tag);
         $this->pagesamount = ceil($this->postamount / $this->postsonpage);
     }
 
