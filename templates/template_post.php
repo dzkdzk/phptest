@@ -11,7 +11,7 @@ include_once(ROOT . "/templates/loginblock.php");
 <br />
 Автор: <?= $fullpost->tail ?>
 <br />
-Дата: <?= gmdate("d-m-Y\ H:i:s\ ", $fullpost->date+timezone*3600) ?>
+Дата: <?= gmdate("d-m-Y\ H:i:s\ ", $fullpost->date + timezone * 3600) ?>
 <br />
 Теги:
 
@@ -20,7 +20,7 @@ include_once(ROOT . "/templates/loginblock.php");
 <?php endfor ?>
 
 <br />
-<?php if ($username) : ?>
+<?php if ($userid) : ?>
     <a href='../controller/edit.php?id=<?= $fullpost->postid ?>'>Редактировать...</a>
     <br />
     <a href="../controller/index.php" onclick="$.post('../controller/edit.php', {del_id:<?= $fullpost->postid ?>})">Удалить</a>

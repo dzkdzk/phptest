@@ -12,6 +12,14 @@ $username = getCookie('username');
 $userid = getCookie('userid');
 $curpage = getReqGET('curpage');
 $tag = getReqGET('tag');
+$uniq = getCookie('uniq');
+if (!$uniq) {
+    $uniq = gethash(time() + rand());
+    sCookie('uniq', $uniq);
+}
+$server = healString($_SERVER);
+$loger = new Log();
+$loger->record($userid, $uniq, $server);
 $navbar = new navigator($curpage, $tag);
 $lenta = new ArticlesBlock();
 $lenta->getBlockPost($navbar->postsonpage * ($navbar->currentpage - 1), $navbar->postsonpage, $tag);

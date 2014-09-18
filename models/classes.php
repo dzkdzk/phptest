@@ -13,9 +13,9 @@ interface postManage {
 
     function getSinglePost($postid);
 
-    function editPost($postid, $title, $text, $userid, $hashsess);
+    function editPost($postid, $title, $text, $userid, $hashsess, $tags);
 
-    function addPost($title, $text, $userid, $hashsess);
+    function addPost($title, $text, $userid, $hashsess, $tags);
 
     function delPost($postid, $userid, $hashsess);
 }
@@ -36,13 +36,11 @@ class ArticlesBlock extends Articles implements getPosts {
     function getBlockPost($offset, $rowcount, $tag) {
 
         $db = new MySQLdata();
-        $db->connect();
         if ($tag) {
             $res = $db->getPrePostsByTag($offset, $rowcount, previewlength, $tag);
         } else {
             $res = $db->getPrePosts($offset, $rowcount, previewlength);
         }
-        $db->disconnect();
         $this->datastruct = $res;
         foreach ($this->datastruct as $item) {
             $this->title[] = $item['title'];
@@ -73,14 +71,14 @@ class SinglePost extends Articles implements postManage {
         $this->tags = $db->getPostTags($postid);
     }
 
-    function editPost($postid, $title, $text, $userid, $hashsess) {
+    function editPost($postid, $title, $text, $userid, $hashsess, $tags) {
         $db = new MySQLdata();
-        $db->updatePost($postid, $title, $text, $userid, $hashsess);
+        $db->updatePost($postid, $title, $text, $userid, $hashsess, $tags);
     }
 
-    function addPost($title, $text, $userid, $hashsess) {
+    function addPost($title, $text, $userid, $hashsess, $tags) {
         $db = new MySQLdata();
-        $res = $db->newPost($title, $text, $userid, $hashsess);
+        $res = $db->newPost($title, $text, $userid, $hashsess, $tags);
         return $res;
     }
 
@@ -118,6 +116,20 @@ class navigator {
         if ($this->pagesamount > $this->currentpage) {
             echo "<a href='index.php?curpage={$nextpage}'>-></a>";
         }
+    }
+
+}
+
+class Log {
+
+    function __construct() {
+        
+    }
+
+    function record($userid, $uniq, $server) {
+        $db = new MySQLdata();
+
+        $db->recordLog($userid, $uniq, $server);
     }
 
 }

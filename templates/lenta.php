@@ -7,11 +7,13 @@
         <div><?= $lenta->text[$i] ?></div>
         <div>Автор: <?= $lenta->tail[$i] ?></div>
         <div>Дата: <?= gmdate("d-m-Y\ H:i:s\ ", $lenta->date[$i] + timezone * 3600) ?></div>
-        <div>Теги: 
-            <?php foreach ($lenta->tags[$i] as $item): ?>
-                <a href='../controller/index.php?tag=<?= $item['id'] ?>'><?= $item['tag'] ?></a>                 
-            <?php endforeach; ?>
-        </div>
+        <?php if ($lenta->tags[$i]): ?>
+            <div>Теги: 
+                <?php foreach ($lenta->tags[$i] as $item): ?>
+                    <a href='../controller/index.php?tag=<?= $item['id'] ?>'><?= $item['tag'] ?></a>                 
+                <?php endforeach; ?>
+            </div>
+        <?php endif ?>
     </div>
 <?php endfor; ?>
 <?php if ($userid) : ?>

@@ -10,13 +10,19 @@ include_once(ROOT . "/models/classes.php");  // тут все твои клас�
 $pagetitle = 'Просмотр статьи';
 $username = getCookie('username');
 $userid = getCookie('userid');
-$postid=$_GET['id'];
-
+$postid = getReqGET('id');
+$uniq = getCookie('uniq');
+if (!$uniq) {
+    setcookie('uniq', gethash(time() + rand()), time()+316000000);
+}
+$server = healString($_SERVER);
+$loger = new Log();
+$loger->record($userid, $uniq, $server);
 $fullpost = new SinglePost();
 $fullpost->getSinglePost($postid);
 
 include_once(ROOT . "/templates/header.php");
 include_once(ROOT . "/templates/template_post.php");
-include_once(ROOT . "/templates/footer.php");      
+include_once(ROOT . "/templates/footer.php");
 
 

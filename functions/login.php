@@ -5,13 +5,17 @@ include_once(ROOT . "/functions/common_func.php");
 include_once(ROOT . "/models/db.php");
 $db = new MySQLdata();
 $db->connect();
-if (isset($_GET['logout'])) {
+$logout = getReqGET('logout');
+$register = getReqPOST('register');
+$username = getReqPOST('username');
+$password = getReqPOST('password');
+if ($logout) {
     Logout();
 } else {
-    if (isset($_POST['register'])) {
-        Register($db, $_POST['username'], $_POST['password']);
+    if ($register) {
+        Register($db, $username, $password);
     } else {
-        Login($db, $_POST['username'], $_POST['password']);
+        Login($db, $username, $password);
     }
 }
 $db->disconnect();
