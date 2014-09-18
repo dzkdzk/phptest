@@ -20,6 +20,22 @@ interface postManage {
     function delPost($postid, $userid, $hashsess);
 }
 
+class Comments {
+
+    function newComment($postid, $userid, $sesshash, $text) {
+        $db = new MySQLdata();
+        $db->addComment($postid, $userid, $sesshash, $text);
+    }
+
+    function getBlockComments($postid) {
+        $res = false;
+        $db = new MySQLdata();
+        $res = $db->getCommentByPost($postid);
+        return $res;
+    }
+
+}
+
 class Articles {
 
     protected $datastruct;
@@ -89,7 +105,7 @@ class SinglePost extends Articles implements postManage {
 
 }
 
-class navigator {
+class Navigator {
 
     var $currentpage;
     var $postamount;

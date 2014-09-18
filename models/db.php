@@ -5,10 +5,10 @@ class MySQLdata {
     protected $mysqli;
 
     function __construct() {
-        $this->DB_HOST = 'localhost';
-        $this->DB_LOGIN = 'root';
-        $this->DB_PASSWORD = '';
-        $this->DB_NAME = 'blogdb';
+        $this->DB_HOST = DB_HOST;
+        $this->DB_LOGIN = DB_LOGIN;
+        $this->DB_PASSWORD = DB_PASSWORD;
+        $this->DB_NAME = DB_NAME;
         $this->connect();
     }
 
@@ -229,6 +229,29 @@ class MySQLdata {
         $sqlquery = "INSERT INTO log (date, ip, browser, os, url , fromurl, userid, uniq) VALUES ('$now', '$ip', '$browser', '$os', '$link', '$from', '$userid', '$uniq')";
 
         $sqlresult = $this->mysqli->query($sqlquery);
+    }
+
+    function getCommentByPost($postid) {
+        $res = False;
+        $sqlquery = "select * from comments inner join users on comments.userid=users.id where comments.postid=$postid";
+        $sqlresult = $this->mysqli->query($sqlquery);
+        if ($sqlresult->num_rows > 0) {
+            while ($row = $sqlresult->fetch_assoc()) {
+                $tablerow[] = $row;
+            }
+            $res = $tablerow;
+        }
+        return $res;
+    }
+
+    function addComment($postid, $userid, $hashsess, $text) {
+        if ($role = $this->isUserAuthent($userid, $hashsess)) {
+            $now = time();
+            $sqlquery = "insert into comments (postid,userid,text,date) VALUES ('$postid','$userid','$text','$now')";
+            $sqlresult = $this->mysqli->query($sqlquery);
+            $res = $this->mysqli->insert_id;
+            return $res;
+        }
     }
 
 }

@@ -25,5 +25,5 @@ include_once(ROOT . "/templates/loginblock.php");
     <br />
     <a href="../controller/index.php" onclick="$.post('../controller/edit.php', {del_id:<?= $fullpost->postid ?>})">Удалить</a>
 <?php endif ?>
-       
+<?php include_once(ROOT . "/templates/commentsblock.php");?>
 

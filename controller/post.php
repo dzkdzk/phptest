@@ -13,13 +13,15 @@ $userid = getCookie('userid');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');
 if (!$uniq) {
-    setcookie('uniq', gethash(time() + rand()), time()+316000000);
+    setcookie('uniq', gethash(time() + rand()), time() + 316000000);
 }
 $server = healString($_SERVER);
 $loger = new Log();
 $loger->record($userid, $uniq, $server);
 $fullpost = new SinglePost();
 $fullpost->getSinglePost($postid);
+$postcomments = new Comments();
+$commentblock = $postcomments->getBlockComments($postid);
 
 include_once(ROOT . "/templates/header.php");
 include_once(ROOT . "/templates/template_post.php");
