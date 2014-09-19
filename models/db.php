@@ -166,23 +166,58 @@ class MySQLdata {
         $sqlresult = $this->mysqli->query($sqlquery);
     }
 
-    function updatePost($postid, $title, $text, $userid, $hashsess, $tags) {
+    function getPostFiles($postid) {
+        $res = null;
+        $sqlquery = "select * from images where postid='$postid'";
+        $sqlresult = $this->mysqli->query($sqlquery);
+        if ($sqlresult->num_rows > 0) {
+            while ($row = $sqlresult->fetch_assoc()) {
+                $tablerow[] = $row;
+            }
+            $res = $tablerow;
+        }
+        return $res;
+    }
+
+    function addFileToPost($postid, $files) {
+        //$sqlquery = "delete from images where postid = '$postid'";
+        //$sqlresult = $this->mysqli->query($sqlquery);
+        $sqlquery = "insert into images (postid, filename) VALUES ";
+        foreach ($files as $id => $fn) {
+            $sqlquery = $sqlquery . "(" . $postid . ",'" . $fn . "'),";
+        }
+        $sqlquery = mb_substr($sqlquery, 0, -1);
+        $sqlresult = $this->mysqli->query($sqlquery);
+    }
+
+    function delFileFromPost($postid, $userid, $hashsess, $file) {
+        $file = basename($file);
+        if ($role = $this->isUserAuthent($userid, $hashsess)) {
+            unlink(ROOT . uploaddir . $file);
+            $sqlquery = "delete from images where postid = '$postid' and filename='$file'";
+            $sqlresult = $this->mysqli->query($sqlquery);
+        }
+    }
+
+    function updatePost($postid, $title, $text, $userid, $hashsess, $tags, $files) {
         if ($role = $this->isUserAuthent($userid, $hashsess)) {
             $now = time();
             $sqlquery = "UPDATE `posts` SET `title` = '$title', `text` = '$text', `date` = '$now' where (posts.id=$postid and (posts.userid='$userid' or $role=1))";
             $sqlresult = $this->mysqli->query($sqlquery);
             $this->addTagsToPost($postid, $tags);
+            $this->addFileToPost($postid, $files);
         }
 //   большой запрос, сразу с авторизацией (как вариант)                $sqlquery = "UPDATE `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid SET `title` = '$title', `text` = '$text', `date` = '$now' where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=1 and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
     }
 
-    function newPost($title, $text, $userid, $hashsess, $tags) {
+    function newPost($title, $text, $userid, $hashsess, $tags, $files) {
         if ($role = $this->isUserAuthent($userid, $hashsess)) {
             $now = time();
             $sqlquery = "insert into posts (userid,text,title,date) VALUES ('$userid','$text','$title', '$now')";
             $sqlresult = $this->mysqli->query($sqlquery);
             $res = $this->mysqli->insert_id;
             $this->addTagsToPost($res, $tags);
+            $this->addFileToPost($res, $files);
             return $res;
         }
 //   большой запрос, сразу с авторизацией (как вариант)                $sqlquery = "insert into posts (userid,text,title,date) select users.id,'$text' as text,'$title' as title, '$now' as date from users where users.id=$userid and users.sesshash='$hashsess'";

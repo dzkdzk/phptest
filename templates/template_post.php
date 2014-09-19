@@ -7,7 +7,11 @@ include_once(ROOT . "/templates/loginblock.php");
 <p>Добро пожаловать в Блог для Всех</p>
 <h2><a href = '../controller/post.php?id=<?= $fullpost->postid ?>'><?= $fullpost->title ?></a></h2>
 <br />
-<?= $fullpost->text ?>
+<?php for ($i = 0; $i < count($fullpost->files); $i++) : ?>
+    <?php $filepath = uploaddir . $fullpost->files[$i]['filename'] ?>
+    <img src="../<?=$filepath ?>">
+<?php endfor ?>
+<?= nl2br($fullpost->text) ?>
 <br />
 Автор: <?= $fullpost->tail ?>
 <br />
@@ -25,5 +29,5 @@ include_once(ROOT . "/templates/loginblock.php");
     <br />
     <a href="../controller/index.php" onclick="$.post('../controller/edit.php', {del_id:<?= $fullpost->postid ?>})">Удалить</a>
 <?php endif ?>
-<?php include_once(ROOT . "/templates/commentsblock.php");?>
+<?php include_once(ROOT . "/templates/commentsblock.php"); ?>
 

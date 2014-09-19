@@ -9,21 +9,31 @@ include_once(ROOT . "/templates/loginblock.php");
 
 <div class='article'>
 
-    <form action="../controller/edit.php" method="post">
+    <form action="../controller/edit.php" method="post" enctype="multipart/form-data">
         <label for='inptitle'>Заголовок: </label><input name="inptitle" id="inptitle" type="text" size="2000" value='<?= $posttitle ?>'>
-        <label for='inptext'>Текст: </label><input name="inptext" id="inptext" type="text" size="20000" value='<?= $posttext ?>'>
+        <div id="images">
+            <?php for ($i = 0; $i < count($fullpost->files); $i++) : ?>
+                <?php $filepath = uploaddir . $fullpost->files[$i]['filename'] ?>
+                <img id="img<?= $i ?>" onmouseout="hideImDelWarning();" onmouseover="showImDelWarning(this.id);" onclick="return confirm('Удалить рисунок?') ? delImage(this.id, $(this).attr('src')) : null;" height="100px" width="100px" src="../<?= $filepath ?>">
+            <?php endfor ?>
+        </div>
+        <div>
+            <label for='inptext'>Текст: </label><textarea id="inptext" rows="10" cols="150" name="inptext"><?= nl2br($posttext) ?></textarea>
+        </div>
         <input name="postid" type="hidden" value="<?= $postid ?>">
         <label>Автор: <?= $postauthorname ?></label>
         <div id='tags'>
-            <?php if (!isset($tags)) : $tags[]['tag'] = "";
+            <?php
+            if (!isset($tags)) : $tags[]['tag'] = "";
                 $tags[0]['id'] = "new";
-            endif ?>
+            endif
+            ?>
             Теги:
             <div id='tagscontainer'>
                 <?php for ($i = 0; $i < count($tags); $i++) : ?>
                     <input type=text onkeyup='getcorrecttag(this.id, $(this).val());' id='tag<?= $i ?>' name='tag<?= $i ?>' value='<?= $tags[$i]["tag"] ?>'>
                     <input type=hidden id='tag<?= $i ?>x' name='tag<?= $i ?>x' value='<?= $tags[$i]["id"] ?>'>
-<?php endfor ?>
+                <?php endfor ?>
             </div>
             <button type="button" onclick="$('#tagscontainer').append(newtaginput());">Еще...</button>
             <script>
@@ -50,6 +60,29 @@ include_once(ROOT . "/templates/loginblock.php");
                             }
                         });
                     }
+                }
+                function delImage(elem, file) {
+                    $('#' + elem).fadeOut();
+                    $.post(
+                            "../controller/delimage.php",
+                            {
+                                img: file,
+                                postid: "<?= $postid ?>",
+                                userid: "<?= $userid ?>",
+                                hashsess: "<?= $hashsess ?>"
+                            }, onAjaxSuccess
+                            );
+                    function onAjaxSuccess(data)
+                    {
+                        alert(data);
+                    }
+                }
+                function showImDelWarning(elem) {
+                    $("<div id='delq' style='position: fixed; color:red; top:200px;'>удалить?</div>").insertAfter('#' + elem);
+                    //$('#imageeditdiv').empty();
+                }
+                function hideImDelWarning() {
+                    $('#delq').remove();
                 }
                 function drawchoosediv() {
                     $('#tags').append("<div id='choosediv'></div>");
@@ -112,7 +145,9 @@ include_once(ROOT . "/templates/loginblock.php");
                 }
             </script>
         </div>
-        <br />
+        <div id="imgchooser">
+            <input onchange='$(this).clone().appendTo("#imgchooser");' name="image[]" type="file">
+        </div>
         <input name="SavePost" type="submit" value="Сохранить">
     </form>
 </div>

@@ -20,6 +20,14 @@ function delCookie($cook) {
     return $res;
 }
 
+function getReqFiles($files) {
+    $res = false;
+    if (isset($_FILES[$files])) {
+        $res = $_FILES[$files];
+    }
+    return $res;
+}
+
 function getReqPOST($post) {
     $res = FALSE;
     if (isset($_POST[$post])) {

@@ -28,15 +28,33 @@ if ($delpost) {                                          //при удалени
     header('Location: ../controller/index.php');
     exit();
 } elseif ($ispostsave) {                                 //обработка нажатия "Сохранить"
-    $tags = getReqPOSTbyName('tag');
+    $tagids = getReqPOSTbyName('tag');
     $postid = getReqPOST('postid');
     $posttitle = getReqPOST('inptitle');
     $posttext = getReqPOST('inptext');
-    if ($postid == "new") {
-        $postid = $fullpost->addPost($posttitle, $posttext, $postauthorid, $hashsess, $tags);
-    } else {
-        $fullpost->editPost($postid, $posttitle, $posttext, $postauthorid, $hashsess, $tags);
+    $files = getReqFiles('image');
+
+
+    foreach ($files["error"] as $key => $error) {
+        if ($files["size"][$key] > 1024 * 3 * 1024) {
+            continue;
+        }
+        if ($error == UPLOAD_ERR_OK) {
+            $newfilename = getHash(time() . rand()) . ".jpg";
+            $tmp_name = $files["tmp_name"][$key];
+            $name = $files["name"][$key];
+            move_uploaded_file($tmp_name, ROOT . uploaddir . $newfilename);
+            $filenames[] = $newfilename;
+        }
     }
+
+
+    if ($postid == "new") {
+        $postid = $fullpost->addPost($posttitle, $posttext, $postauthorid, $hashsess, $tagids, $filenames);
+    } else {
+        $fullpost->editPost($postid, $posttitle, $posttext, $postauthorid, $hashsess, $tagids, $filenames);
+    }
+
     header('Location: ../controller/post.php?id=' . $postid);
     exit();
 } elseif ($isnewpost) {                                 // при нажатии "Новый пост"
@@ -50,6 +68,7 @@ if ($delpost) {                                          //при удалени
     $posttext = $fullpost->text;
     $postauthorname = $fullpost->tail;
     $tags = $fullpost->tags;
+    $files = $fullpost->files;
 }
 
 include_once(ROOT . "/templates/header.php");

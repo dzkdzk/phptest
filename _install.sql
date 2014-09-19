@@ -1,13 +1,80 @@
+-- phpMyAdmin SQL Dump
+-- version 4.1.4
+-- http://www.phpmyadmin.net
+--
+-- Хост: 127.0.0.1
+-- Время создания: Сен 19 2014 г., 17:40
+-- Версия сервера: 5.6.15-log
+-- Версия PHP: 5.5.8
+
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 SET time_zone = "+00:00";
+
 
 /*!40101 SET @OLD_CHARACTER_SET_CLIENT=@@CHARACTER_SET_CLIENT */;
 /*!40101 SET @OLD_CHARACTER_SET_RESULTS=@@CHARACTER_SET_RESULTS */;
 /*!40101 SET @OLD_COLLATION_CONNECTION=@@COLLATION_CONNECTION */;
 /*!40101 SET NAMES utf8 */;
 
+--
+-- База данных: `blogdb`
+--
 CREATE DATABASE IF NOT EXISTS `blogdb` DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci;
 USE `blogdb`;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `comments`
+--
+
+DROP TABLE IF EXISTS `comments`;
+CREATE TABLE IF NOT EXISTS `comments` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `text` varchar(10000) COLLATE utf8_unicode_ci NOT NULL,
+  `userid` int(10) unsigned NOT NULL,
+  `date` int(10) unsigned NOT NULL,
+  `postid` int(10) unsigned NOT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `id` (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=17 ;
+
+--
+-- Дамп данных таблицы `comments`
+--
+
+INSERT INTO `comments` (`id`, `text`, `userid`, `date`, `postid`) VALUES
+(1, 'xxxxxxxasdasdasdxxxxxxx', 6, 2222222222, 3),
+(2, 'qqqqqqqqcqqqq qqqqqq', 8, 2222222252, 3),
+(3, 'rtnrtnr etyn eynebe rb erbg\r\nergerg rtwg\r\nerh\r\n erth \r\neth \r\ner\r\nh erth \r\ne\r\nhetrtrttttttttttt', 7, 2222222302, 3),
+(4, 'rtxxxxxxxxxxxxnrtnr etyn eynebe rb erbg\r\nergerg rtwg\r\nerhxxxxxxx\r\nxxxx\r\n\r\n\r\n\r\nxxxxxxxx\r\n erth \r\neth \r\ner\r\nh erth \r\ne\r\nhetrtrttttttttttt', 9, 2222225302, 3),
+(10, 'uuuuuuuu', 6, 1411045374, 3),
+(11, 'pppppppp', 6, 1411045463, 3),
+(12, 'привет\r\nэто новый комментарий\r\nс переносом строк', 6, 1411046337, 3),
+(13, 'jhgchjg\r\nkgvk\r\n\r\nho iuh iuh iuhi\r\nkjbh', 8, 1411047095, 6),
+(14, 'йцукйуцк\r\nйуцкй\r\n\r\nцук\r\n\r\n\r\nйцукйуцкйцукйуцкйуцк', 8, 1411140897, 30),
+(15, 'sfbgsfdbsfdb', 6, 1411141036, 27),
+(16, 'sebhshgsfdgsfdg', 6, 1411141045, 27);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `images`
+--
+
+DROP TABLE IF EXISTS `images`;
+CREATE TABLE IF NOT EXISTS `images` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
+  `postid` int(10) unsigned NOT NULL,
+  `filename` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=12 ;
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `log`
+--
 
 DROP TABLE IF EXISTS `log`;
 CREATE TABLE IF NOT EXISTS `log` (
@@ -21,7 +88,11 @@ CREATE TABLE IF NOT EXISTS `log` (
   `url` varchar(1000) COLLATE utf8_unicode_ci NOT NULL,
   `uniq` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=527 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=820 ;
+
+--
+-- Дамп данных таблицы `log`
+--
 
 INSERT INTO `log` (`id`, `date`, `browser`, `os`, `ip`, `fromurl`, `userid`, `url`, `uniq`) VALUES
 (34, 1410874848, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=4', 6, 'phptest.com/controller/edit.php?id=4', ''),
@@ -522,7 +593,308 @@ INSERT INTO `log` (`id`, `date`, `browser`, `os`, `ip`, `fromurl`, `userid`, `ur
 (523, 1411037265, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
 (524, 1411037274, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
 (525, 1411037307, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
-(526, 1411037320, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165');
+(526, 1411037320, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(527, 1411037894, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(528, 1411037897, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(529, 1411037931, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(530, 1411038153, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(531, 1411038158, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(532, 1411038204, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(533, 1411038270, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(534, 1411038331, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(535, 1411038368, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(536, 1411038431, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(537, 1411038458, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(538, 1411038488, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(539, 1411038583, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(540, 1411041183, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(541, 1411041656, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(542, 1411041669, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(543, 1411041674, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(544, 1411041719, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165');
+INSERT INTO `log` (`id`, `date`, `browser`, `os`, `ip`, `fromurl`, `userid`, `url`, `uniq`) VALUES
+(545, 1411041737, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(546, 1411043454, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(547, 1411043508, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(548, 1411043510, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(549, 1411043533, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(550, 1411043555, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(551, 1411043597, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(552, 1411043613, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(553, 1411043643, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(554, 1411043656, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(555, 1411043729, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(556, 1411043735, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(557, 1411043745, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(558, 1411043804, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(559, 1411043817, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(560, 1411043877, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(561, 1411043883, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(562, 1411043925, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(563, 1411044043, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(564, 1411044082, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(565, 1411044199, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(566, 1411044296, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(567, 1411044407, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(568, 1411044718, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(569, 1411044759, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(570, 1411044767, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(571, 1411044782, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 0, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(572, 1411044796, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 9, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(573, 1411044808, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(574, 1411044992, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(575, 1411045029, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(576, 1411045088, 'Chrome', 'Windows 7', '127.0.0.1', '', 9, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(577, 1411045114, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(578, 1411045167, 'Chrome', 'Windows 7', '127.0.0.1', '', 9, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(579, 1411045180, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(580, 1411045277, 'Chrome', 'Windows 7', '127.0.0.1', '', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(581, 1411045288, 'Chrome', 'Windows 7', '127.0.0.1', '', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(582, 1411045331, 'Chrome', 'Windows 7', '127.0.0.1', '', 9, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(583, 1411045341, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 0, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(584, 1411045355, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 6, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(585, 1411045366, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(586, 1411045379, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(587, 1411045392, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(588, 1411045455, 'Chrome', 'Windows 7', '127.0.0.1', '', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(589, 1411045464, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(590, 1411045714, 'Chrome', 'Windows 7', '127.0.0.1', '', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(591, 1411046162, 'Chrome', 'Windows 7', '127.0.0.1', '', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(592, 1411046307, 'Chrome', 'Windows 7', '127.0.0.1', '', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(593, 1411046338, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 6, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(594, 1411046626, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 6, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(595, 1411046635, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 6, 'phptest.com/controller/post.php?id=8', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(596, 1411046899, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 6, 'phptest.com/controller/post.php?id=8', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(597, 1411046910, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=8', 0, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(598, 1411046954, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 0, 'phptest.com/controller/post.php?id=7', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(599, 1411047029, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 0, 'phptest.com/controller/post.php?id=7', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(600, 1411047037, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=7', 0, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(601, 1411047047, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 0, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(602, 1411047061, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(603, 1411047073, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(604, 1411047084, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=6', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(605, 1411047096, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=6', 8, 'phptest.com/controller/post.php?id=6', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(606, 1411048670, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=6', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(607, 1411048927, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=6', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(608, 1411048942, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=6', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(609, 1411049060, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(610, 1411049113, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(611, 1411049136, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=6', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(612, 1411049148, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=6', 8, 'phptest.com/controller/edit.php?id=6', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(613, 1411049157, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=6', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(614, 1411049225, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=4', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(615, 1411049237, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=4', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(616, 1411049253, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=4', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(617, 1411049263, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=4', 8, 'phptest.com/controller/edit.php?id=4', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(618, 1411049270, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=4', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(619, 1411049283, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(620, 1411049619, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(621, 1411049672, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(622, 1411049753, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(623, 1411049757, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(624, 1411049818, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(625, 1411051635, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(626, 1411051641, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(627, 1411051648, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(628, 1411051668, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(629, 1411051678, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(630, 1411051928, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(631, 1411052000, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(632, 1411052124, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(633, 1411052230, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(634, 1411053652, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(635, 1411053673, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(636, 1411053678, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(637, 1411053717, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(638, 1411055688, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(639, 1411055751, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(640, 1411055851, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(641, 1411055936, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(642, 1411056010, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(643, 1411056074, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(644, 1411056669, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(645, 1411056677, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(646, 1411056736, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(647, 1411057004, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(648, 1411057345, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(649, 1411057361, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(650, 1411057377, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(651, 1411057551, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(652, 1411057617, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(653, 1411057646, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(654, 1411057662, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(655, 1411057682, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(656, 1411057728, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(657, 1411057739, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(658, 1411057880, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(659, 1411058721, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(660, 1411058856, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(661, 1411058904, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(662, 1411058938, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(663, 1411059020, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(664, 1411059225, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(665, 1411059381, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(666, 1411059428, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(667, 1411059428, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(668, 1411059501, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(669, 1411059604, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(670, 1411059698, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(671, 1411059853, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(672, 1411059996, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(673, 1411060041, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(674, 1411060139, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(675, 1411060288, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(676, 1411060378, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(677, 1411060422, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(678, 1411060472, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(679, 1411060519, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(680, 1411060572, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(681, 1411104924, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(682, 1411105775, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(683, 1411105886, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(684, 1411105935, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(685, 1411105972, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(686, 1411106076, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(687, 1411106134, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(688, 1411106191, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(689, 1411106287, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(690, 1411106659, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(691, 1411106670, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(692, 1411106689, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(693, 1411106715, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(694, 1411106728, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(695, 1411106821, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(696, 1411106846, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(697, 1411106864, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(698, 1411106945, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(699, 1411106978, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(700, 1411107126, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(701, 1411107151, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(702, 1411107455, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(703, 1411108243, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(704, 1411108254, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(705, 1411108424, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(706, 1411108521, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(707, 1411108558, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(708, 1411108584, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(709, 1411108672, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(710, 1411108726, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(711, 1411108727, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(712, 1411108743, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(713, 1411108758, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(714, 1411108806, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(715, 1411108820, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(716, 1411108842, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(717, 1411108842, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(718, 1411108854, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(719, 1411108885, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(720, 1411108906, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(721, 1411108918, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(722, 1411108937, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(723, 1411109030, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(724, 1411109057, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(725, 1411109100, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(726, 1411109119, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(727, 1411109146, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(728, 1411109157, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(729, 1411109179, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(730, 1411109320, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(731, 1411109345, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(732, 1411135676, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(733, 1411135934, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(734, 1411136108, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(735, 1411136129, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(736, 1411136249, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(737, 1411136327, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(738, 1411136355, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(739, 1411136366, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(740, 1411136426, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(741, 1411136475, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(742, 1411136487, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(743, 1411136500, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(744, 1411136548, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(745, 1411136583, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(746, 1411136611, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(747, 1411136788, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(748, 1411136803, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(749, 1411136889, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(750, 1411136904, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(751, 1411136926, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(752, 1411137104, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(753, 1411137173, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(754, 1411137325, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(755, 1411137421, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(756, 1411137484, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(757, 1411138252, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(758, 1411138258, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(759, 1411138741, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(760, 1411138749, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(761, 1411138786, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(762, 1411138824, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(763, 1411138830, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(764, 1411138955, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(765, 1411139000, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(766, 1411139037, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(767, 1411139126, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(768, 1411139165, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(769, 1411139202, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(770, 1411139210, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(771, 1411139603, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(772, 1411139631, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(773, 1411139642, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(774, 1411139680, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(775, 1411139748, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(776, 1411139786, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(777, 1411139807, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(778, 1411140017, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(779, 1411140050, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(780, 1411140137, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(781, 1411140149, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(782, 1411140205, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(783, 1411140218, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(784, 1411140238, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(785, 1411140247, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(786, 1411140451, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(787, 1411140464, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?XDEBUG_SESSION_START=netbeans-xdebug', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(788, 1411140476, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(789, 1411140489, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(790, 1411140596, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(791, 1411140603, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(792, 1411140653, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(793, 1411140681, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(794, 1411140731, 'Chrome', 'Windows 7', '127.0.0.1', '', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(795, 1411140741, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/edit.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(796, 1411140770, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(797, 1411140772, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=3', 8, 'phptest.com/controller/post.php?id=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(798, 1411140798, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=3', 8, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(799, 1411140831, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(800, 1411140867, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(801, 1411140871, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php', 8, 'phptest.com/controller/post.php?id=30', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(802, 1411140899, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=30', 8, 'phptest.com/controller/post.php?id=30', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(803, 1411140922, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=30', 0, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(804, 1411140938, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 0, 'phptest.com/controller/index.php?curpage=2', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(805, 1411140949, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?curpage=2', 0, 'phptest.com/controller/index.php?curpage=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(806, 1411140973, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?curpage=3', 0, 'phptest.com/controller/post.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(807, 1411140988, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=27', 6, 'phptest.com/controller/index.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(808, 1411141003, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php', 6, 'phptest.com/controller/index.php?curpage=2', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(809, 1411141013, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?curpage=2', 6, 'phptest.com/controller/index.php?curpage=3', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(810, 1411141027, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/index.php?curpage=3', 6, 'phptest.com/controller/post.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(811, 1411141037, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=27', 6, 'phptest.com/controller/post.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(812, 1411141046, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=27', 6, 'phptest.com/controller/post.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165');
+INSERT INTO `log` (`id`, `date`, `browser`, `os`, `ip`, `fromurl`, `userid`, `url`, `uniq`) VALUES
+(813, 1411141051, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=27', 6, 'phptest.com/controller/edit.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(814, 1411141078, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=27', 6, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(815, 1411141080, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=27', 6, 'phptest.com/controller/post.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(816, 1411141093, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=27', 6, 'phptest.com/controller/edit.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(817, 1411141104, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=27', 6, 'phptest.com/controller/edit.php', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(818, 1411141106, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/edit.php?id=27', 6, 'phptest.com/controller/post.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165'),
+(819, 1411141116, 'Chrome', 'Windows 7', '127.0.0.1', 'http://phptest.com/controller/post.php?id=27', 6, 'phptest.com/controller/edit.php?id=27', '5b7a91a09bbe1a142b133ee92347c255ae367d20f467203d38ecfe529b7ac165');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `posts`
+--
 
 DROP TABLE IF EXISTS `posts`;
 CREATE TABLE IF NOT EXISTS `posts` (
@@ -532,12 +904,16 @@ CREATE TABLE IF NOT EXISTS `posts` (
   `title` text COLLATE utf8_unicode_ci NOT NULL,
   `date` int(10) unsigned NOT NULL DEFAULT '946684800',
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=30 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=31 ;
+
+--
+-- Дамп данных таблицы `posts`
+--
 
 INSERT INTO `posts` (`id`, `userid`, `text`, `title`, `date`) VALUES
-(3, 6, '32ййййй qr qwegf qew Lorem ipsum dolor sit amet, cqwef qw qwef qewf qwefqew eeeeeonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.qfr qwegf qew Lorem ipsum dolor sit amet, cqwef qw qwef qewf qwefqew eeeeeonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.qfr qwegf qew Lorem ipsum dolor sit amet, cqwef qw qwef qewf qwefqew eeeeeonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'newtitle!!!', 1411035738),
-(4, 6, '4  e et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'fugiat nulla', 1411032976),
-(6, 6, '6 rcitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in rep\r\n\r\n       rehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Lorem ipsum dolor sit amet, consectetur adipiscing el\r\n       it, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exe. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'occaecat cupidatat non ', 946684800),
+(3, 6, '32ййййй qr qwegf qew Lorem ipsum dolor sit amet, cqwef qw qwef qewf qwefqew eeeeeonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.qfr qwegf qew Lorem ipsum dolor sit amet, cqwef qw qwef qewf qwefqew eeeeeonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.qfr qwegf qew Lorem ipsum dolor sit amet, cqwef qw qwef qewf qwefqew eeeeeonsectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'newtitle!!!', 1411140771),
+(4, 6, '421  e etss dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'fssugiat nulla', 1411049819),
+(6, 6, '6 rcitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in rep       rehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur Lorem ipsum dolor sit amet, consectetur adipiscing el       it, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exe. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'occaecat cupidatat non ', 1411049061),
 (7, 6, '7 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem Ipsum', 946684800),
 (8, 6, '81 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem Ipsum', 946684800),
 (9, 6, '92 Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.', 'Lorem Ipsum', 946684800),
@@ -547,7 +923,14 @@ INSERT INTO `posts` (`id`, `userid`, `text`, `title`, `date`) VALUES
 (26, 8, 'test', 'Tesat', 1410773567),
 (27, 8, 'фывфыв2', 'йцуйцу', 1410876641),
 (28, 9, 'ssssssssssssss', 'aaaaaaaaaaaaaa', 1411029683),
-(29, 8, 'йц', 'йц', 1411033937);
+(29, 8, 'йц', 'йц', 1411033937),
+(30, 8, 'qweqweqweqwe', 'qweqweqwe', 1411140868);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `tagbp`
+--
 
 DROP TABLE IF EXISTS `tagbp`;
 CREATE TABLE IF NOT EXISTS `tagbp` (
@@ -555,13 +938,17 @@ CREATE TABLE IF NOT EXISTS `tagbp` (
   `postid` int(11) NOT NULL,
   `tagid` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=34 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=47 ;
+
+--
+-- Дамп данных таблицы `tagbp`
+--
 
 INSERT INTO `tagbp` (`id`, `postid`, `tagid`) VALUES
 (30, 29, 14),
-(28, 4, 2),
-(5, 6, 3),
-(6, 6, 4),
+(41, 30, 18),
+(43, 30, 20),
+(42, 30, 19),
 (7, 7, 3),
 (8, 7, 5),
 (9, 8, 5),
@@ -572,14 +959,26 @@ INSERT INTO `tagbp` (`id`, `postid`, `tagid`) VALUES
 (14, 10, 2),
 (15, 10, 1),
 (16, 10, 3),
-(33, 3, 17);
+(46, 27, 1),
+(45, 27, 3),
+(40, 30, 1);
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `tags`
+--
 
 DROP TABLE IF EXISTS `tags`;
 CREATE TABLE IF NOT EXISTS `tags` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
   `tag` varchar(50) COLLATE utf8_unicode_ci NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=18 ;
+) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=21 ;
+
+--
+-- Дамп данных таблицы `tags`
+--
 
 INSERT INTO `tags` (`id`, `tag`) VALUES
 (1, 'новости'),
@@ -595,7 +994,16 @@ INSERT INTO `tags` (`id`, `tag`) VALUES
 (14, 'фывфывфф'),
 (15, 'kgfkhgkjhb'),
 (16, 'qqqq'),
-(17, 'qqq');
+(17, 'qqq'),
+(18, 'tag1'),
+(19, 'tag2'),
+(20, 'tag3');
+
+-- --------------------------------------------------------
+
+--
+-- Структура таблицы `users`
+--
 
 DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
@@ -608,11 +1016,15 @@ CREATE TABLE IF NOT EXISTS `users` (
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=10 ;
 
+--
+-- Дамп данных таблицы `users`
+--
+
 INSERT INTO `users` (`id`, `login`, `fullname`, `passhash`, `sesshash`, `role`) VALUES
-(6, 'john', '', 'fb386cfd7213b45446a9e5137d44358397b2b1910dd992f9fd95e31d8ff1df37', '587db481b8d8629e1d31013c1bca3dde007ceb4c21e1c29948daba3fa57b51a5', 2),
+(6, 'john', '', 'fb386cfd7213b45446a9e5137d44358397b2b1910dd992f9fd95e31d8ff1df37', 'b8af3fd5a42f954d4a0582a90dcb6eb61af0cf84bf593b784876335793adec79', 2),
 (7, 'andrew', '', '5fe3b861a1951a2bf841ea5068b3684091689590d2f5e5b9db3e2204cf435cad', '599be221b0838a27482660fdd10dc136ff9afa0f4d7d4218cb4feede939cc2df', 2),
-(8, 'admin', '', '49b148bd4df6ba4ee192c3a3debf3eddbb7ff9eb1d0c4d83592a02b9decdf037', '94734c7ab52ee7fbfc99d53a8bee1bb5bab2dab8067e5a4addd8a0615300f078', 1),
-(9, 'alex', '', '49b148bd4df6ba4ee192c3a3debf3eddbb7ff9eb1d0c4d83592a02b9decdf037', 'b8c8a5a92898d58391651f89140577b2eb632eb5823d9125b2e14dbecf503028', 2);
+(8, 'admin', '', '49b148bd4df6ba4ee192c3a3debf3eddbb7ff9eb1d0c4d83592a02b9decdf037', '986de32f10d47c613138fd76447082f1c03a8312b2142e43c98fecdb4e46455a', 1),
+(9, 'alex', '', '49b148bd4df6ba4ee192c3a3debf3eddbb7ff9eb1d0c4d83592a02b9decdf037', '46b14b1ebc2b21083ff937f1358531ddccbddd53b016cb571292ceb02d26e937', 2);
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
 /*!40101 SET CHARACTER_SET_RESULTS=@OLD_CHARACTER_SET_RESULTS */;

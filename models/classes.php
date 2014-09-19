@@ -13,9 +13,9 @@ interface postManage {
 
     function getSinglePost($postid);
 
-    function editPost($postid, $title, $text, $userid, $hashsess, $tags);
+    function editPost($postid, $title, $text, $userid, $hashsess, $tags, $files);
 
-    function addPost($title, $text, $userid, $hashsess, $tags);
+    function addPost($title, $text, $userid, $hashsess, $tags, $files);
 
     function delPost($postid, $userid, $hashsess);
 }
@@ -44,6 +44,7 @@ class Articles {
     public $text;
     public $postid;
     public $tags;
+    public $files;
 
 }
 
@@ -85,16 +86,17 @@ class SinglePost extends Articles implements postManage {
         $this->postid = $res['id'];
         $this->date = $res['date'];
         $this->tags = $db->getPostTags($postid);
+        $this->files = $db->getPostFiles($postid);
     }
 
-    function editPost($postid, $title, $text, $userid, $hashsess, $tags) {
+    function editPost($postid, $title, $text, $userid, $hashsess, $tags, $files) {
         $db = new MySQLdata();
-        $db->updatePost($postid, $title, $text, $userid, $hashsess, $tags);
+        $db->updatePost($postid, $title, $text, $userid, $hashsess, $tags, $files);
     }
 
-    function addPost($title, $text, $userid, $hashsess, $tags) {
+    function addPost($title, $text, $userid, $hashsess, $tags, $files) {
         $db = new MySQLdata();
-        $res = $db->newPost($title, $text, $userid, $hashsess, $tags);
+        $res = $db->newPost($title, $text, $userid, $hashsess, $tags, $files);
         return $res;
     }
 
