@@ -8,6 +8,8 @@ $username = getCookie('username');
 $userid = getCookie('userid');
 $postauthorid = getCookie('userid');
 $postauthorname = getCookie('username');
+$error = getCookie('error');
+delCookie('error');
 $hashsess = getCookie('hashsess');
 $ispostsave = getReqPOST('SavePost');
 $delpost = getReqPOST('del_id');
@@ -37,6 +39,8 @@ if ($delpost) {                                          //при удалени
 
     foreach ($files["error"] as $key => $error) {
         if ($files["size"][$key] > 1024 * 3 * 1024) {
+            $error='Слишком большой файл.';
+            sCookie('error', $error);
             continue;
         }
         if ($error == UPLOAD_ERR_OK) {
@@ -52,7 +56,10 @@ if ($delpost) {                                          //при удалени
     if ($postid == "new") {
         $postid = $fullpost->addPost($posttitle, $posttext, $postauthorid, $hashsess, $tagids, $filenames);
     } else {
-        $fullpost->editPost($postid, $posttitle, $posttext, $postauthorid, $hashsess, $tagids, $filenames);
+        $error = $fullpost->editPost($postid, $posttitle, $posttext, $postauthorid, $hashsess, $tagids, $filenames);
+        if ($error) {
+            sCookie('error', $error);
+        }
     }
 
     header('Location: ../controller/post.php?id=' . $postid);

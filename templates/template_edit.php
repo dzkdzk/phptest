@@ -1,7 +1,8 @@
 <?php
 delCookie('test');
-include_once(ROOT . "/templates/menu.php");
+include_once(ROOT . "/templates/menublock.php");
 include_once(ROOT . "/templates/loginblock.php");
+include_once(ROOT . "/templates/messageblock.php");
 ?>
 
 <p>Добро пожаловать в Блог для Всех</p>
@@ -62,7 +63,6 @@ include_once(ROOT . "/templates/loginblock.php");
                     }
                 }
                 function delImage(elem, file) {
-                    $('#' + elem).fadeOut();
                     $.post(
                             "../controller/delimage.php",
                             {
@@ -74,7 +74,11 @@ include_once(ROOT . "/templates/loginblock.php");
                             );
                     function onAjaxSuccess(data)
                     {
-                        alert(data);
+                        if (data == 'Успешно удалено!') {
+                            $('#' + elem).fadeOut();
+                        } else {
+                            alert(data);
+                        }
                     }
                 }
                 function showImDelWarning(elem) {

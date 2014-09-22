@@ -7,6 +7,8 @@ interface getPosts {
     function getBlockPost($offset, $rowcount, $tag);
 
     function getBlockTags($postid);
+
+    function getPostsAmount($tag);
 }
 
 interface postManage {
@@ -20,99 +22,117 @@ interface postManage {
     function delPost($postid, $userid, $hashsess);
 }
 
-class Comments {
+interface commenting {
 
-    function newComment($postid, $userid, $sesshash, $text) {
-        $db = new MySQLdata();
-        $db->addComment($postid, $userid, $sesshash, $text);
-    }
+    function newComment($postid, $userid, $sesshash, $text);
 
-    function getBlockComments($postid) {
-        $res = false;
-        $db = new MySQLdata();
-        $res = $db->getCommentByPost($postid);
-        return $res;
-    }
-
+    function getBlockComments($postid);
 }
 
 class Articles {
 
     protected $datastruct;
     public $title;
-    public $tail;
+    public $author;
     public $text;
     public $postid;
     public $tags;
     public $files;
+    protected $db;
+    public $dberror;
+
+    function __construct() {
+        $this->db = new MySQLdata();
+        $this->dberror = $this->db->error;
+    }
 
 }
 
 class ArticlesBlock extends Articles implements getPosts {
 
     function getBlockPost($offset, $rowcount, $tag) {
-
-        $db = new MySQLdata();
         if ($tag) {
-            $res = $db->getPrePostsByTag($offset, $rowcount, previewlength, $tag);
+            $res = $this->db->getPrePostsByTag($offset, $rowcount, previewlength, $tag);
         } else {
-            $res = $db->getPrePosts($offset, $rowcount, previewlength);
+            $res = $this->db->getPrePosts($offset, $rowcount, previewlength);
         }
         $this->datastruct = $res;
         foreach ($this->datastruct as $item) {
             $this->title[] = $item['title'];
             $this->text[] = $item['text'];
-            $this->tail[] = $item['login'];
+            if ($item['fullname']) {
+                $this->author[] = $item['fullname'];
+            } else {
+                $this->author[] = $item['login'];
+            }
             $this->postid[] = $item['id'];
             $this->date[] = $item['date'];
         }
     }
 
     function getBlockTags($postid) {
-        $db = new MySQLdata();
-        $this->tags[] = $db->getPostTags($postid);
+        $this->tags[] = $this->db->getPostTags($postid);
+    }
+
+    function getPostsAmount($tag) {
+        
     }
 
 }
 
-class SinglePost extends Articles implements postManage {
+class SinglePost extends Articles implements postManage, commenting {
 
     function getSinglePost($postid) {
-        $db = new MySQLdata();
-        $res = $db->getPost($postid);
+
+        $res = $this->db->getPost($postid);
         $this->title = $res['title'];
         $this->text = $res['text'];
         $this->tail = $res['login'];
         $this->postid = $res['id'];
         $this->date = $res['date'];
-        $this->tags = $db->getPostTags($postid);
-        $this->files = $db->getPostFiles($postid);
+        $this->tags = $this->db->getPostTags($postid);
+        $this->files = $this->db->getPostFiles($postid);
     }
 
     function editPost($postid, $title, $text, $userid, $hashsess, $tags, $files) {
-        $db = new MySQLdata();
-        $db->updatePost($postid, $title, $text, $userid, $hashsess, $tags, $files);
+        $error = $this->db->updatePost($postid, $title, $text, $userid, $hashsess, $tags, $files);
+        return $error;
     }
 
     function addPost($title, $text, $userid, $hashsess, $tags, $files) {
-        $db = new MySQLdata();
-        $res = $db->newPost($title, $text, $userid, $hashsess, $tags, $files);
+
+        $res = $this->db->newPost($title, $text, $userid, $hashsess, $tags, $files);
         return $res;
     }
 
     function delPost($postid, $userid, $hashsess) {
-        $db = new MySQLdata();
-        $db->erasePost($postid, $userid, $hashsess);
+
+        $this->db->erasePost($postid, $userid, $hashsess);
+    }
+
+    function newComment($postid, $userid, $sesshash, $text) {
+
+        $this->db->addComment($postid, $userid, $sesshash, $text);
+    }
+
+    function getBlockComments($postid) {
+
+        $res = $this->db->getCommentByPost($postid);
+        return $res;
     }
 
 }
 
 class Navigator {
 
-    var $currentpage;
-    var $postamount;
-    var $postsonpage = postsonpage;
-    var $pagesamount;
+    public $currentpage;
+    public $postamount;
+    public $postsonpage = postsonpage;
+    public $pagesamount;
+    public $nextpage;
+    public $prevpage;
+    protected $db;
+    public $dberror;
 
     public function __construct($curpage, $tag) {
         if ($curpage) {
@@ -120,34 +140,85 @@ class Navigator {
         } else {
             $this->currentpage = 1;
         }
-        $db = new MySQLdata();
-        $this->postamount = $db->getPostAmount($tag);
+        $this->db = new MySQLdata();
+        $this->dberror = $this->db->error;
+        $this->postamount = $this->db->getPostAmount($tag);
         $this->pagesamount = ceil($this->postamount / $this->postsonpage);
-    }
-
-    function draw() {
-        $nextpage = $this->currentpage + 1;
-        $prevpage = $this->currentpage - 1;
-        if ($this->currentpage > 1) {
-            echo "<a href='index.php?curpage={$prevpage}'><-</a>   ";
-        }
-        if ($this->pagesamount > $this->currentpage) {
-            echo "<a href='index.php?curpage={$nextpage}'>-></a>";
-        }
+        $this->nextpage = $this->currentpage + 1;
+        $this->prevpage = $this->currentpage - 1;
     }
 
 }
 
 class Log {
 
+    protected $db;
+    public $dberror;
+
     function __construct() {
-        
+        $this->db = new MySQLdata();
+        $this->dberror = $this->db->error;
     }
 
     function record($userid, $uniq, $server) {
-        $db = new MySQLdata();
+        $this->db->recordLog($userid, $uniq, $server);
+    }
 
-        $db->recordLog($userid, $uniq, $server);
+}
+
+class Auth {
+
+    public $userid;
+    public $username;
+    public $hashsess;
+    public $email;
+    public $fullname;
+    protected $db;
+    public $role;
+
+    function __construct() {
+        $this->db = new MySQLdata();
+        $this->dberror = $this->db->error;
+    }
+
+    function login($username, $password) {
+        $credentials = $this->db->getUserCredentials($username, $password);
+        $this->userid = $credentials['userid'];
+        $this->username = $credentials['username'];
+        $this->hashsess = $credentials['hashsess'];
+        $this->email = $credentials['email'];
+        if ($credentials['fullname']) {
+            $this->username = $credentials['fullname'];
+        } else {
+            $this->username = $credentials['username'];
+        }
+        return $credentials['error'];
+    }
+
+    function logout($userid, $hashsess) {
+        $this->db->destroyUserSession($userid, $hashsess);
+    }
+
+    function register($username, $password) {
+        $credentials = $this->db->addUserGetSessionHashAndID($username, $password);
+        $this->userid = $credentials['userid'];
+        $this->hashsess = $credentials['hashsess'];
+        $this->username = $username;
+        $this->fullname = $username;
+        return $credentials['error'];
+    }
+
+    function getAdvUserInfo($userid, $hashsess) {
+        $credentials = $this->db->getUserInfo($userid, $hashsess);
+        $this->email = $credentials['email'];
+        $this->fullname = $credentials['fullname'];
+        $this->username = $credentials['username'];
+        $this->role = $credentials['role'];
+        $this->error = $credentials['error'];
+    }
+
+    function updateAdvUserInfo($userid, $hashsess, $fullname, $email) {
+        $credentials = $this->db->editUserInfo($userid, $hashsess, $fullname, $email);
     }
 
 }

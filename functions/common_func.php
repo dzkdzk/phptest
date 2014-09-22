@@ -25,6 +25,7 @@ function getReqFiles($files) {
     if (isset($_FILES[$files])) {
         $res = $_FILES[$files];
     }
+    //$res = healString($res);
     return $res;
 }
 
@@ -33,6 +34,7 @@ function getReqPOST($post) {
     if (isset($_POST[$post])) {
         $res = $_POST[$post];
     }
+    $res = healString($res);
     return $res;
 }
 
@@ -41,6 +43,7 @@ function getReqGET($get) {
     if (isset($_GET[$get])) {
         $res = $_GET[$get];
     }
+    $res = healString($res);
     return $res;
 }
 
@@ -60,15 +63,33 @@ function getReqPOSTbyName($name) {
                 $id = $id . $i;
                 $i++;
             }
-            $res[$id] = $tag;
+            $res[$id] = healString($tag);
             $tag = false;
             $id = false;
         }
     }
+
     return @$res;
 }
 
-function healString($val) { //добавить очистку от кавычек и т.д.
+function healString($val) {
+    if ($val) {
+        if (!is_numeric($val)) {
+            if (is_array($val)) {
+                foreach ($val as $key => $item) {
+                    if (is_numeric($item)) {
+                        continue;
+                    }
+                    $item = strip_tags($item);
+                    $item = htmlspecialchars($item);
+                    $val[$key] = $item;
+                }
+            } else {
+                $val = strip_tags($val);
+                $val = htmlspecialchars($val);
+            }
+        }
+    }
     return $val;
 }
 

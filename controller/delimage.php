@@ -8,5 +8,9 @@ $postid = getReqPost('postid');
 $userid = getReqPost('userid');
 $hashsess = getReqPost('hashsess');
 $db = new MySQLdata();
-$res = $db->delFileFromPost($postid, $userid, $hashsess, $file);
-echo "удалено!";
+$error = $db->delFileFromPost($postid, $userid, $hashsess, $file);
+if ($error) {
+    echo $error;
+} else {
+    echo "Успешно удалено!";
+}
