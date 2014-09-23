@@ -1,14 +1,9 @@
-<?php
-
-echo <<<HTML
-        <div>
-        <table>
-        <tr>
-        <td><a href = 'index.php'>Главная страница, лента</a></td>
-        <td><a href = 'bio.php'>Обо мне</a></td>
-        <td><a href = 'links.php'>Полезные ссылки</a></td>
-        <td><a href = 'admin.php'>Админская панель</a></td>
-        </tr>
-        </table>
-        </div>
-HTML;
+<div class="blog-masthead">
+    <div class="container">
+        <nav class="blog-nav">
+            <a class="blog-nav-item active" href="../controller/index.php">Главная</a>
+            <a class="blog-nav-item" href="#">Обо мне</a>
+            <a class="blog-nav-item" href="#">Полезные ссылки</a>
+        </nav>
+    </div>
+</div>

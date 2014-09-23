@@ -314,7 +314,7 @@ class MySQLdata {
             } else {
                 $error = 'Вы не можете редактировать эту статью.';
             }
-        }
+        } else {$error = 'Перелогиньтесь.';}
         return $error;
 //   большой запрос, сразу с авторизацией (как вариант)                $sqlquery = "UPDATE `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid SET `title` = '$title', `text` = '$text', `date` = '$now' where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=1 and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
     }

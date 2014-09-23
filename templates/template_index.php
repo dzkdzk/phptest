@@ -1,11 +1,22 @@
-<?php
 
+<?php
 include_once(ROOT . "/templates/menublock.php");
-include_once(ROOT . "/templates/loginblock.php");
 include_once(ROOT . "/templates/messageblock.php");
-echo <<<HTML
-<p>Добро пожаловать в Блог для Всех</p>
-HTML;
-include(ROOT . "/templates/navigatorblock.php");
-include_once(ROOT . "/templates/lentablock.php");
-include(ROOT . "/templates/navigatorblock.php");
+?>
+
+
+<div class="container">
+    <div class="blog-header">
+        <h1 class="blog-title">Блог Для Всех</h1>
+        <p class="lead blog-description">Добро пожаловать!</p>
+    </div>
+    <div class="row">
+        <?php
+        include_once(ROOT . "/templates/lentablock.php");
+        ?>
+        <?php
+        include_once(ROOT . "/templates/sidebarblock.php");
+        ?>
+    </div><!-- /.row -->
+</div><!-- /.container -->
+

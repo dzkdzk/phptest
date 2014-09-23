@@ -1,16 +1,14 @@
 <?php if ($userid) : ?>
-    <div>
-        <p>Hello,
-        <a href='../controller/my.php'> <?= $username ?>!</a></p>
-        <button onClick="location.href = '../controller/login.php?logout=1'">Выйти</button>
+    <div class="form-signin">
+            <h4 class="form-signin-heading"><a href='../controller/my.php'> <?= $username ?></a></h4>
+        <button class="btn btn-large btn-primary" onClick="location.href = '../controller/login.php?logout=1'">Выйти</button>
     </div>
 <?php else: ?>
-    <div>
-        <form action = "../controller/login.php" method = "post">
-            <input name = "username" type = "text" size = "20">
-            <input name = "password" type = "password" size = "40">
-            <input name = "loginbutton" type = "submit" value = "Войти">
-            <label><input name = "register" type = "checkbox">Новый пользователь</label>
+        <form class="form-signin" action = "../controller/login.php" method = "post">
+            <h4 class="form-signin-heading">Войдите, пожалуйста</h4>
+            <input name = "username" type = "text" class="input-block-level" placeholder="ваш логин">
+            <input name = "password" type = "password" class="input-block-level" placeholder="пароль">
+            <input name = "loginbutton" type = "submit" class="btn btn-large btn-primary" value = "Войти">
+            <label class="checkbox"><input name = "register" type = "checkbox">Новый пользователь</label>
         </form>
-    </div>
 <?php endif ?>

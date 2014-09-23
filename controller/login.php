@@ -9,7 +9,7 @@ $username = getReqPOST('username');
 $password = getReqPOST('password');
 $userid = getReqPOST('userid');
 $hashsess = getReqPOST('hashsess');
-$returnurl = healString($_SERVER['HTTP_REFERER']);
+$returnurl = (isset($_SERVER['HTTP_REFERER'])) ? healString($_SERVER['HTTP_REFERER']) : '../controller/index.php';
 $user = new Auth();
 if ($logout) {
     $user->logout($userid, $hashsess);

@@ -5,7 +5,6 @@ include_once(ROOT . "/templates/loginblock.php");
 include_once(ROOT . "/templates/messageblock.php");
 ?>
 
-<p>Добро пожаловать в Блог для Всех</p>
 <div>
     <form method="post" action="../controller/my.php">
         <label>Полное имя<input name="fullname" type='text' value='<?= $user->fullname ?>'></label>
