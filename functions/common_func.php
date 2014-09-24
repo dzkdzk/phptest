@@ -10,13 +10,13 @@ function getCookie($cook) {
 
 function sCookie($cook, $val) {
 
-    $res = setcookie($cook, $val, cookietime, cookiepath, domain);
+    $res = setcookie($cook, $val, COOKIETIME, COOKIEPATH, DOMAIN);
     return $res;
 }
 
 function delCookie($cook) {
 
-    $res = setcookie($cook, "", time() - 3600, cookiepath, domain);
+    $res = setcookie($cook, "", time() - 3600, COOKIEPATH, DOMAIN);
     return $res;
 }
 
@@ -95,7 +95,7 @@ function healString($val) {
 
 function getHash($target) {
 
-    $hash = hash('sha256', $target . salt);
+    $hash = hash('sha256', $target . SALT);
     return $hash;
 }
 

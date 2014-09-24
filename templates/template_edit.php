@@ -1,10 +1,7 @@
 <?php
-delCookie('test');
 include_once(ROOT . "/templates/menublock.php");
 include_once(ROOT . "/templates/messageblock.php");
 ?>
-
-
 
 <div class="container">
     <div class="blog-header">
@@ -16,18 +13,19 @@ include_once(ROOT . "/templates/messageblock.php");
             <div class="blog-post">
 
                 <form action="../controller/edit.php" method="post" enctype="multipart/form-data">
-                    <p>Заголовок: </p>
-                    <input class="form-control input-md" name="inptitle" id="inptitle" type="text" size="200" value='<?= $posttitle ?>'>
+                    <div class="form-group">
+                        <label>Заголовок: </label>
+                        <input class="form-control input-md" name="inptitle" id="inptitle" type="text" size="200" value='<?= $posttitle ?>'>
+                    </div>
 
 
                     <div id="images">
+                        <div><label>Изображения: </label></div>
                         <?php for ($i = 0; $i < count($fullpost->files); $i++) : ?>
                             <?php $filepath = uploaddir . $fullpost->files[$i]['filename'] ?>
                             <img title="удалить?" class="img-thumbnail postimages" id="img<?= $i ?>" onclick="return confirm('Удалить рисунок?') ? delImage(this.id, $(this).attr('src')) : null;" src="../<?= $filepath ?>">
                         <?php endfor ?>
                     </div>
-
-
 
                     <div id="imgchooser">
                         <div>
@@ -36,16 +34,19 @@ include_once(ROOT . "/templates/messageblock.php");
                             <p class="btn btn-info btn-mini" onclick="trigEl(this);">Еще...</p>
                         </div>
                     </div>
-                    <p>Текст: </p><textarea class="form-control" id="inptext" rows="10" cols="60" name="inptext"><?= nl2br($posttext) ?></textarea>
-                    <input name="postid" type="hidden" value="<?= $postid ?>">
-                    <label>Автор: <?= $postauthorname ?></label>
-                    <div id='tags'>
+                    <div class="form-group">
+                        <label>Текст: </label><textarea class="form-control" id="inptext" rows="10" cols="60" name="inptext"><?= $posttext ?></textarea>
+                        <input name="postid" type="hidden" value="<?= $postid ?>"></div>
+                    <div class="form-group">
+                        <label>Автор: <?= $postauthorname ?></label>
+                    </div>
+                    <div id='tags' class="form-group">
                         <?php
                         if (!isset($tags)) : $tags[]['tag'] = "";
                             $tags[0]['id'] = "new";
                         endif
                         ?>
-                        Теги:
+                        <label>Теги:</label>
                         <div id='tagscontainer'>
                             <?php for ($i = 0; $i < count($tags); $i++) : ?>
                                 <input class="form-control input-md" type=text onkeyup='getcorrecttag(this.id, $(this).val());' id='tag<?= $i ?>' name='tag<?= $i ?>' value='<?= $tags[$i]["tag"] ?>'>
@@ -53,7 +54,7 @@ include_once(ROOT . "/templates/messageblock.php");
                             <?php endfor ?>
                         </div>
                         <!-- Modal -->
-                        <div id="myModal" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+                        <div id="myModal" class="modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">
                                 <div class="modal-content">
                                     <div id="choosediv" class="modal-body">
@@ -78,14 +79,14 @@ include_once(ROOT . "/templates/messageblock.php");
 
 <script>
     var inc = <?= $i ?>;
-    function newtaginput() {
+    function newtaginput() {                        //динамическое добавление новых инпутов для тега
         var res;
         res = "<input class='form-control input-md' type='text' onkeyup='getcorrecttag(this.id, $(this).val());' id='tag" + inc + "' name='tag" + inc + "'>";
         res = res + "<input type='hidden' id='tag" + inc + "x' name='tag" + inc + "x'>";
         inc++;
         return res;
     }
-    function getcorrecttag(inp_el, value) {
+    function getcorrecttag(inp_el, value) {         //получение из базы уже существующих тегов ля подсказки
         $("#" + inp_el + "x").val("new");
         if (value.length > 2) {
             $.ajax({
@@ -93,16 +94,15 @@ include_once(ROOT . "/templates/messageblock.php");
                 success: function (data) {
                     var res;
                     res = json_decode(data);
-                    if (!$("div").is("#choosediv")) {
-                        drawchoosediv();
+                    if (data != 'false') {
+                        fillchoosediv(inp_el, res);
+                        $('#myModal').modal('show');
                     }
-                    fillchoosediv(inp_el, res);
-                    $('#myModal').modal('show');
                 }
             });
         }
     }
-    function delImage(elem, file) {
+    function delImage(elem, file) {                 //отправляем запрос на сервер об удалении изображения поста
         $.post(
                 "../controller/delimage.php",
                 {
@@ -121,13 +121,10 @@ include_once(ROOT . "/templates/messageblock.php");
             }
         }
     }
-    function drawchoosediv() {
-        $('#tags').append("<div id='c222222222222hoosediv'></div>");
-    }
-    function destroychoosediv() {
+    function destroychoosediv() {                  //спрятать окно подсказок тегов
         $('#myModal').modal('hide');
     }
-    function fillchoosediv(inp_el, data) {
+    function fillchoosediv(inp_el, data) {         //заполнение модального окна подсказками
         $('#choosediv').empty();
         var valTag;
         for (var item in data) {
@@ -136,12 +133,28 @@ include_once(ROOT . "/templates/messageblock.php");
             $('#choosediv').append('<p onclick="updInput(\'' + inp_el + '\',\'' + valTag + '\',\'' + valId + '\');">' + valTag + '</p>');
         }
     }
-    function updInput(inp_el, valTag, valId) {
+    function updInput(inp_el, valTag, valId) {    //при выборе из подсказки тега - перенос в инпут
         $("#" + inp_el).val(valTag);
         $("#" + inp_el + "x").val(valId);
         destroychoosediv();
     }
-    function json_decode(str_json) {
+    function trigEl(el) {                                      //костыли для стилизования инпута файлов
+        if ($(el).prev().val() === '') {                       //создал рядом с инпутом элемент, который стилизован и дублирует функции инпута, а сам инпут скрыт
+            $(el).prev().click();
+        } else {
+            $(el).parent().remove();
+        }
+    }
+    function cloneEl(el) {
+        el.clone().appendTo('#imgchooser');                    //динамическое обавление еще инпутов
+        el.next().children().val('');
+    }
+    function pushVal(el, val) {                                //перенос имени файла из инпута в элемент
+        // el.text((val.match(/[^\\/]+\.[^\\/]+$/) || []).pop());
+        // [^\\/]+$
+        el.text((val.match(/[^\\/]+$/) || []).pop());
+    }
+    function json_decode(str_json) {              //стандартная ф-ция для распарсивания json
         var json = this.window.JSON;
         if (typeof json === 'object' && typeof json.parse === 'function') {
             try {
@@ -178,18 +191,5 @@ include_once(ROOT . "/templates/messageblock.php");
         this.php_js.last_error_json = 4;
         return null;
     }
-    function trigEl(el) {
-        if ($(el).prev().val() === '') {
-            $(el).prev().click();
-        } else {
-            $(el).parent().remove();
-        }
-    }
-    function cloneEl(el) {
-        el.clone().appendTo('#imgchooser');
-        el.next().children().val('');
-    }
-    function pushVal(el, val) {
-        el.text((val.match(/[^\\/]+\.[^\\/]+$/) || []).pop());
-    }
+
 </script>

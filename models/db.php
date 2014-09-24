@@ -41,7 +41,7 @@ class MySQLdata {
         }
     }
 
-    function addUserGetSessionHashAndID($username, $password) {
+    function addUserGetSessionHashAndID($username, $password) {                                  //регистрация, получение новой сессии
         $username = $this->mysqli->real_escape_string($username);
         $password = $this->mysqli->real_escape_string($password);
         $sqlquery = "SELECT * FROM users WHERE LOWER(login) = LOWER('$username')";
@@ -61,7 +61,7 @@ class MySQLdata {
     }
 
     function getUserCredentials($username, $password) {
-        $username = $this->mysqli->real_escape_string($username);
+        $username = $this->mysqli->real_escape_string($username);                             //логин пользователя, получение новой сессии
         $password = $this->mysqli->real_escape_string($password);
         $sqlquery = "SELECT * FROM users WHERE LOWER(login) = LOWER('$username')";
         $sqlresult = $this->mysqli->query($sqlquery);
@@ -76,6 +76,7 @@ class MySQLdata {
                 $credentials['email'] = $tablerow['email'];
                 $credentials['fullname'] = $tablerow['fullname'];
                 $credentials['username'] = $tablerow['login'];
+                $credentials['role'] = $tablerow['role'];
                 $credentials['error'] = false;
             } else {
                 $credentials['error'] = 'Wrong password!';
@@ -86,7 +87,7 @@ class MySQLdata {
         return $credentials;
     }
 
-    function getUserInfo($userid, $hashsess) {
+    function getUserInfo($userid, $hashsess) {                                            //получение расширенных данных пользователя
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
         $sqlquery = "SELECT * FROM users WHERE id=$userid and sesshash='$hashsess'";
@@ -104,16 +105,38 @@ class MySQLdata {
         return $credentials;
     }
 
-    function editUserInfo($userid, $hashsess, $fullname, $email) {
+    function editUserInfo($userid, $hashsess, $fullname, $email, $newrole, $targetuserid) {     //апдейт инфо пользователя
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
         $fullname = $this->mysqli->real_escape_string($fullname);
         $email = $this->mysqli->real_escape_string($email);
-        $sqlquery = "UPDATE `users` SET `fullname` = '$fullname',`email` = '$email' where id=$userid and sesshash='$hashsess'";
-        $sqlresult = $this->mysqli->query($sqlquery);
+        $targetuserid = $this->mysqli->real_escape_string($targetuserid);
+        if ($newrole and $targetuserid) {
+            if (($role = $this->isUserAuthent($userid, $hashsess))and ( $role == ADMIN_ROLE)) {
+                $sqlquery = "UPDATE `users` SET `fullname` = '$fullname',`email` = '$email',`role`='$newrole' where id=$targetuserid";
+                $sqlresult = $this->mysqli->query($sqlquery);
+            }
+        } else {
+            $sqlquery = "UPDATE `users` SET `fullname` = '$fullname',`email` = '$email' where id=$userid and sesshash='$hashsess'";
+            $sqlresult = $this->mysqli->query($sqlquery);
+        }
     }
 
-    function destroyUserSession($userid, $hashsess) {
+    function removeUserWithRef($userid, $hashsess, $targetuserid) {                   //удаление юзера со всеми вхождениями
+        $userid = $this->mysqli->real_escape_string($userid);
+        $hashsess = $this->mysqli->real_escape_string($hashsess);
+        $targetuserid = $this->mysqli->real_escape_string($targetuserid);
+        if (($role = $this->isUserAuthent($userid, $hashsess))and ( $role == ADMIN_ROLE)) {
+            $sqlquery = "delete from `users` where id='$targetuserid'";
+            $sqlresult = $this->mysqli->query($sqlquery);
+            $sqlquery = "delete from `posts` where userid='$targetuserid'";
+            $sqlresult = $this->mysqli->query($sqlquery);
+            $sqlquery = "delete from `comments` where userid='$targetuserid'";
+            $sqlresult = $this->mysqli->query($sqlquery);
+        }
+    }
+
+    function destroyUserSession($userid, $hashsess) {                               //логаут
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
         $randomhash = getHash(time() + rand());
@@ -121,7 +144,7 @@ class MySQLdata {
         $sqlresult = $this->mysqli->query($sqlquery);
     }
 
-    function isUserAuthent($userid, $hashsess) {
+    function isUserAuthent($userid, $hashsess) {                                    //воспомогательная ф-я, для проверки аутентификации
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
         $role = false;
@@ -134,7 +157,7 @@ class MySQLdata {
         return $role;
     }
 
-    function getUserRole($userid) {
+    function getUserRole($userid) {                                                 //получить права пользователя
         $userid = $this->mysqli->real_escape_string($userid);
         $role = false;
         $sqlquery = "SELECT * FROM users WHERE id = '$userid'";
@@ -146,25 +169,43 @@ class MySQLdata {
         return $role;
     }
 
-    function getPrePosts($offset, $rowcount, $previewlength) {
-        $offset = $this->mysqli->real_escape_string($offset);
-        $rowcount = $this->mysqli->real_escape_string($rowcount);
-        $previewlength = $this->mysqli->real_escape_string($previewlength);
-        $sqlquery = "SELECT posts.id,login,fullname,CAST(text as char($previewlength))as text,title,date FROM `posts` inner join `users` on posts.userid=users.id LIMIT $offset,$rowcount";
-        if ($sqlresult = $this->mysqli->query($sqlquery)) {
-            while ($row = $sqlresult->fetch_assoc()) {
-                $tablerow[] = $row;
+    function getUsersList($userid, $hashsess) {                                    //список всех пользователей
+        $userid = $this->mysqli->real_escape_string($userid);
+        $hashsess = $this->mysqli->real_escape_string($hashsess);
+
+        if (($role = $this->isUserAuthent($userid, $hashsess))and ( $role == ADMIN_ROLE)) {
+            $sqlquery = "select id,login,fullname,email,role from `users`";
+            if ($sqlresult = $this->mysqli->query($sqlquery)) {
+                while ($row = $sqlresult->fetch_assoc()) {
+                    $tablerow[] = $row;
+                }
             }
         }
         return $tablerow;
     }
 
-    function getPrePostsByTag($offset, $rowcount, $previewlength, $tag) {
+    function getPrePosts($offset, $rowcount, $PREVIEWLENGTH) {                         //выдача предпросмотров всех постов для ленты
         $offset = $this->mysqli->real_escape_string($offset);
         $rowcount = $this->mysqli->real_escape_string($rowcount);
-        $previewlength = $this->mysqli->real_escape_string($previewlength);
+        $PREVIEWLENGTH = $this->mysqli->real_escape_string($PREVIEWLENGTH);
+        $sqlquery = "SELECT posts.id,login,fullname,CAST(text as char($PREVIEWLENGTH))as text,title,date FROM `posts` inner join `users` on posts.userid=users.id LIMIT $offset,$rowcount";
+        if ($sqlresult = $this->mysqli->query($sqlquery)) {
+            while ($row = $sqlresult->fetch_assoc()) {
+                $tablerow[] = $row;
+            }
+        }
+        if (!isset($tablerow)) {
+            $tablerow = false;
+        }
+        return $tablerow;
+    }
+
+    function getPrePostsByTag($offset, $rowcount, $PREVIEWLENGTH, $tag) {           //выдача предпросмотров всех постов для ленты c фильтрацией по тегу
+        $offset = $this->mysqli->real_escape_string($offset);
+        $rowcount = $this->mysqli->real_escape_string($rowcount);
+        $PREVIEWLENGTH = $this->mysqli->real_escape_string($PREVIEWLENGTH);
         $tag = $this->mysqli->real_escape_string($tag);
-        $sqlquery = "SELECT posts.id,login,fullname,CAST(text as char($previewlength))as text,title,date from posts inner join tagbp inner join tags inner join `users` on posts.userid=users.id and posts.id=tagbp.postid and tagbp.tagid=tags.id where tags.id=$tag LIMIT $offset,$rowcount";
+        $sqlquery = "SELECT posts.id,login,fullname,CAST(text as char($PREVIEWLENGTH))as text,title,date from posts inner join tagbp inner join tags inner join `users` on posts.userid=users.id and posts.id=tagbp.postid and tagbp.tagid=tags.id where tags.id=$tag LIMIT $offset,$rowcount";
         if ($sqlresult = $this->mysqli->query($sqlquery)) {
             while ($row = $sqlresult->fetch_assoc()) {
                 $tablerow[] = $row;
@@ -173,16 +214,35 @@ class MySQLdata {
         return $tablerow;
     }
 
-    function getPost($postid) {
+    function getPrePostsByText($offset, $rowcount, $PREVIEWLENGTH, $text) {        //выдача предпросмотров всех постов для ленты с фильтрацией по части текста, заглавия,  автора и т.д.
+        $offset = $this->mysqli->real_escape_string($offset);
+        $rowcount = $this->mysqli->real_escape_string($rowcount);
+        $PREVIEWLENGTH = $this->mysqli->real_escape_string($PREVIEWLENGTH);
+        $text = $this->mysqli->real_escape_string($text);
+        $sqlquery = "SELECT posts.id,login,fullname,CAST(text as char($PREVIEWLENGTH))as text,title,date from posts inner join `users` on posts.userid=users.id where `text` LIKE '%$text%' OR `title` LIKE '%$text%' OR `login` LIKE '%$text%' OR `fullname` LIKE '%$text%' LIMIT $offset,$rowcount";
+        if ($sqlresult = $this->mysqli->query($sqlquery)) {
+            while ($row = $sqlresult->fetch_assoc()) {
+                $tablerow[] = $row;
+            }
+        }
+        if ($sqlresult->num_rows > 0) {
+            $res = $tablerow;
+        } else {
+            $res = false;
+        }
+        return $res;
+    }
+
+    function getPost($postid) {                                              //выдача отдельной статьи
         $postid = $this->mysqli->real_escape_string($postid);
-        $sqlquery = "SELECT posts.id,login,text,title,date FROM `posts` inner join `users` on posts.userid=users.id WHERE posts.id=$postid";
+        $sqlquery = "SELECT posts.id,fullname,login,text,title,date FROM `posts` inner join `users` on posts.userid=users.id WHERE posts.id=$postid";
         if ($sqlresult = $this->mysqli->query($sqlquery)) {
             $row = $sqlresult->fetch_assoc();
         }
         return $row;
     }
 
-    function getPostTags($postid) {
+    function getPostTags($postid) {                                            //выдача тегов по статье
         $postid = $this->mysqli->real_escape_string($postid);
         $res = False;
         $sqlquery = "select tags.id,tags.tag from posts inner join tags inner join tagbp on tags.id=tagbp.tagid and posts.id=tagbp.postid where posts.id=$postid";
@@ -196,7 +256,7 @@ class MySQLdata {
         return $res;
     }
 
-    function newTag($tag) {
+    function newTag($tag) {                                                      //добавление в базу нового тега
         $tag = $this->mysqli->real_escape_string($tag);
         $sqlquery = "select * from tags where tag ='$tag'";
         if ($sqlresult = $this->mysqli->query($sqlquery)) {
@@ -211,7 +271,7 @@ class MySQLdata {
         return $res;
     }
 
-    function getTagsByPart($part) {
+    function getTagsByPart($part) {                                              //поиск тегов по части для подсказок
         $part = $this->mysqli->real_escape_string($part);
         $res = False;
         $sqlquery = "select * from tags where tag like '%$part%' limit 10";
@@ -225,7 +285,7 @@ class MySQLdata {
         return $res;
     }
 
-    function addTagsToPost($postid, $tags) {
+    function addTagsToPost($postid, $tags) {                                     //добавить новый тег в статью
         $postid = $this->mysqli->real_escape_string($postid);
         foreach ($tags as $id => $tag) {
             $id = $this->mysqli->real_escape_string($id);
@@ -249,7 +309,7 @@ class MySQLdata {
         $sqlresult = $this->mysqli->query($sqlquery);
     }
 
-    function getPostFiles($postid) {
+    function getPostFiles($postid) {                                              //выдача изображений поста
         $postid = $this->mysqli->real_escape_string($postid);
         $res = null;
         $sqlquery = "select * from images where postid='$postid'";
@@ -263,7 +323,7 @@ class MySQLdata {
         return $res;
     }
 
-    function addFileToPost($postid, $files) {
+    function addFileToPost($postid, $files) {                                    //добаление нового изобр в пост
         $postid = $this->mysqli->real_escape_string($postid);
         $sqlquery = "insert into images (postid, filename) VALUES ";
         foreach ($files as $id => $fn) {
@@ -274,7 +334,7 @@ class MySQLdata {
         $sqlresult = $this->mysqli->query($sqlquery);
     }
 
-    function delFileFromPost($postid, $userid, $hashsess, $file) {
+    function delFileFromPost($postid, $userid, $hashsess, $file) {               //удаление изобр. из статьи
         $postid = $this->mysqli->real_escape_string($postid);
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
@@ -298,7 +358,7 @@ class MySQLdata {
         return $error;
     }
 
-    function updatePost($postid, $title, $text, $userid, $hashsess, $tags, $files) {
+    function updatePost($postid, $title, $text, $userid, $hashsess, $tags, $files) {         //редактирование статьи
         $postid = $this->mysqli->real_escape_string($postid);
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
@@ -306,20 +366,23 @@ class MySQLdata {
         $text = $this->mysqli->real_escape_string($text);
         $error = false;
         if ($role = $this->isUserAuthent($userid, $hashsess)) {
+            $adminrole = ADMIN_ROLE;
             $now = time();
-            $sqlquery = "UPDATE `posts` SET `title` = '$title', `text` = '$text', `date` = '$now' where (posts.id=$postid and (posts.userid='$userid' or $role=1))";
+            $sqlquery = "UPDATE `posts` SET `title` = '$title', `text` = '$text', `date` = '$now' where (posts.id=$postid and (posts.userid='$userid' or $role=$adminrole))";
             if ($sqlresult = $this->mysqli->query($sqlquery)) {
                 $this->addTagsToPost($postid, $tags);
                 $this->addFileToPost($postid, $files);
             } else {
                 $error = 'Вы не можете редактировать эту статью.';
             }
-        } else {$error = 'Перелогиньтесь.';}
+        } else {
+            $error = 'Перелогиньтесь.';
+        }
         return $error;
-//   большой запрос, сразу с авторизацией (как вариант)                $sqlquery = "UPDATE `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid SET `title` = '$title', `text` = '$text', `date` = '$now' where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=1 and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
+//   большой запрос, сразу с авторизацией (как вариант)                $sqlquery = "UPDATE `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid SET `title` = '$title', `text` = '$text', `date` = '$now' where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=ADMIN_ROLE and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
     }
 
-    function newPost($title, $text, $userid, $hashsess, $tags, $files) {
+    function newPost($title, $text, $userid, $hashsess, $tags, $files) {         //добавление новогой статьи
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
         $title = $this->mysqli->real_escape_string($title);
@@ -336,18 +399,46 @@ class MySQLdata {
 //   большой запрос, сразу с авторизацией (как вариант)                $sqlquery = "insert into posts (userid,text,title,date) select users.id,'$text' as text,'$title' as title, '$now' as date from users where users.id=$userid and users.sesshash='$hashsess'";
     }
 
-    function erasePost($postid, $userid, $hashsess) {
+    function erasePost($postid, $userid, $hashsess) {                            //удаление статьи
         $postid = $this->mysqli->real_escape_string($postid);
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
-        $sqlquery = "DELETE from tempposts using `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=1 and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";
+        $adminrole = ADMIN_ROLE;
+        $sqlquery = "select * from posts where id = $postid";
+        if ($sqlresult = $this->mysqli->query($sqlquery)) {
+            $row = $sqlresult->fetch_assoc();
+            $postsuserid = $row['userid'];
+        }
+        if ($role = $this->isUserAuthent($userid, $hashsess)) {
+            $sqlquery = "DELETE from `posts` where id='$postid' and (userid='$userid' or '$role'='$adminrole')";
+            $sqlresult = $this->mysqli->query($sqlquery);
+        }
+        $sqlquery = "select * from images where postid = $postid";
         $sqlresult = $this->mysqli->query($sqlquery);
+        if ($sqlresult->num_rows > 0) {
+            while ($row = $sqlresult->fetch_assoc()) {
+                unlink(ROOT . uploaddir . $row['filename']);
+            }
+        }
+        if ($userid == $postsuserid or $role == ADMIN_ROLE) {
+            $sqlquery = "delete from images where postid = '$postid'";
+            $sqlresult = $this->mysqli->query($sqlquery);
+            $sqlquery = "delete from tagbp where postid = '$postid'";
+            $sqlresult = $this->mysqli->query($sqlquery);
+        } else {
+            $error = "Вы не можете редактировать эту статью.";
+        }
+        return $error;
+
+//            $sqlquery = "DELETE from tempposts using `posts` as tempposts inner join users as userstemp1 on userstemp1.id=tempposts.userid inner join users as userstemp2 on userstemp2.id=$userid where ((tempposts.userid=$userid and userstemp1.sesshash='$hashsess') or (userstemp2.role=$adminrole and userstemp2.sesshash='$hashsess')) and tempposts.id=$postid";    //сразу одним запросом
     }
 
-    function getPostAmount($tag) {
+    function getPostAmount($tag, $text) {                                         //рассчет кол-ва постов для навигатора-пагинации 
         $tag = $this->mysqli->real_escape_string($tag);
         if ($tag) {
             $sqlquery = "SELECT COUNT(*) from posts inner join tagbp inner join tags inner join `users` on posts.userid=users.id and posts.id=tagbp.postid and tagbp.tagid=tags.id where tags.id='$tag'";
+        } elseif ($text) {
+            $sqlquery = "SELECT COUNT(*) from posts inner join `users` on posts.userid=users.id where `text` LIKE '%$text%' OR `title` LIKE '%$text%' OR `login` LIKE '%$text%' OR `fullname` LIKE '%$text%'";
         } else {
             $sqlquery = "SELECT COUNT(*) FROM posts";
         }
@@ -358,7 +449,7 @@ class MySQLdata {
         return $res;
     }
 
-    function recordLog($userid, $uniq, $server) {
+    function recordLog($userid, $uniq, $server) {                                  //логирование посещений страниц юзерами
         $userid = $this->mysqli->real_escape_string($userid);
         $uniq = $this->mysqli->real_escape_string($uniq);
         $server['HTTP_USER_AGENT'] = $this->mysqli->real_escape_string($server['HTTP_USER_AGENT']);
@@ -389,7 +480,7 @@ class MySQLdata {
         $sqlresult = $this->mysqli->query($sqlquery);
     }
 
-    function getCommentByPost($postid) {
+    function getCommentByPost($postid) {                                        //выдача комментов по статье
         $postid = $this->mysqli->real_escape_string($postid);
         $res = False;
         $sqlquery = "select * from comments inner join users on comments.userid=users.id where comments.postid=$postid";
@@ -403,7 +494,7 @@ class MySQLdata {
         return $res;
     }
 
-    function addComment($postid, $userid, $hashsess, $text) {
+    function addComment($postid, $userid, $hashsess, $text) {                                //добавление нового коммента
         $postid = $this->mysqli->real_escape_string($postid);
         $userid = $this->mysqli->real_escape_string($userid);
         $hashsess = $this->mysqli->real_escape_string($hashsess);
@@ -415,6 +506,33 @@ class MySQLdata {
             $res = $this->mysqli->insert_id;
             return $res;
         }
+    }
+
+    function getPage($pageid) {                                                   //выдача страницы
+        $pageid = $this->mysqli->real_escape_string($pageid);
+        $sqlquery = "SELECT * FROM `pages` WHERE id=$pageid";
+        if ($sqlresult = $this->mysqli->query($sqlquery)) {
+            $row = $sqlresult->fetch_assoc();
+        }
+        return $row;
+    }
+
+    function savePage($pageid, $title, $text, $userid, $hashsess) {                //сохранение страницы
+        $pageid = $this->mysqli->real_escape_string($pageid);
+        $userid = $this->mysqli->real_escape_string($userid);
+        $title = $this->mysqli->real_escape_string($title);
+        $text = $this->mysqli->real_escape_string($text);
+        $hashsess = $this->mysqli->real_escape_string($hashsess);
+
+        if (($role = $this->isUserAuthent($userid, $hashsess))and ( $role == ADMIN_ROLE)) {
+            $sqlquery = "UPDATE `pages` SET `title` = '$title', `text` = '$text' where id='$pageid'";
+            if (!$sqlresult = $this->mysqli->query($sqlquery)) {
+                $error = 'Вы не можете редактировать эту статью.';
+            }
+        } else {
+            $error = 'Перелогиньтесь.';
+        }
+        return $error;
     }
 
 }

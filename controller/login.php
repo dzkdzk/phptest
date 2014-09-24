@@ -16,6 +16,8 @@ if ($logout) {
     delcookie("username");
     delcookie("userid");
     delcookie("hashsess");
+    delcookie("fullname");
+    delcookie("role");
 } else {
     if ($register) {
         $error = $user->register($username, $password);
@@ -28,6 +30,7 @@ if ($logout) {
         sCookie("username", $user->username);
         sCookie("userid", $user->userid);
         sCookie('hashsess', $user->hashsess);
+        sCookie('role', $user->role);
     }
 }
 header("Location: " . $returnurl);
