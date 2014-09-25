@@ -260,7 +260,7 @@ h6, .h6 {
     position: relative;
     overflow: hidden;
 }
-div input[type=file] {
+div .inpfile input {
     position: absolute;
     top: 0;
     right: 0;

@@ -1,5 +1,4 @@
 <?php
-delCookie('test');
 include_once(ROOT . "/templates/menublock.php");
 include_once(ROOT . "/templates/messageblock.php");
 ?>

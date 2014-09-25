@@ -28,7 +28,7 @@ include_once(ROOT . "/templates/messageblock.php");
                     </div>
 
                     <div id="imgchooser">
-                        <div>
+                        <div class="inpfile">
                             <input autocomplete="off" onchange="cloneEl($(this).parent());
                                     pushVal($(this).next(), $(this).val());" name="image[]" type="file">
                             <p class="btn btn-info btn-mini" onclick="trigEl(this);">Еще...</p>
