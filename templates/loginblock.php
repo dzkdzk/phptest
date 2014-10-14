@@ -6,6 +6,7 @@
             <li><a onClick="location.href = '../controller/login.php?logout=1'">Выйти</a></li>
             <?php if ($role == ADMIN_ROLE) : ?>
                 <li><a onClick="location.href = '../controller/users.php'" type="button">Список пользователей</a></li>
+                <li><a onClick="location.href = '../controller/prefs.php'" type="button">Расширенные настройки</a></li>
                 <li><a onClick="location.href = '../controller/pages.php?edit=1'" type="button">Обо мне</a></li>
                 <li><a onClick="location.href = '../controller/pages.php?edit=2'" type="button">Ссылки</a></li>
             <?php endif; ?>

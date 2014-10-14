@@ -15,6 +15,15 @@ $error = getCookie('error');
 $role = getCookie('role');
 $searchtext = getReqGET('search');
 $isflush = getReqGET('flush');
+$selpostsonpage = getReqPOST('selpostsonpage');
+$cookpostsonpage = getCookie('postsonpage');
+if ($selpostsonpage) {
+    sCookie('postsonpage', $selpostsonpage);
+} elseif ($cookpostsonpage) {
+    $selpostsonpage = $cookpostsonpage;
+} else {
+    $selpostsonpage = POSTSONPAGE;
+}
 
 delCookie('error');                          //очищаем значение ошибки
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
@@ -48,13 +57,13 @@ if ($isflush) {
     $searchtext = false;
     $viewtype = false;
 }
-$navbar = new navigator($curpage, $tag, $searchtext);        //расчет параметров для пагинации
+$navbar = new navigator($curpage, $selpostsonpage, $tag, $searchtext);        //расчет параметров для пагинации
 if ($viewtype == 2) {                                        //вывод ленты по найденному текста
-    $lenta->getBlockPostByText($navbar->POSTSONPAGE * ($navbar->currentpage - 1), $navbar->POSTSONPAGE, $searchtext);
+    $lenta->getBlockPostByText($navbar->postsonpage * ($navbar->currentpage - 1), $navbar->postsonpage, $searchtext);
     for ($i = 0; $i < count($lenta->title); $i++) {
         $lenta->getBlockTags($lenta->postid[$i]);
     }
-} elseif ($lenta->getBlockPost($navbar->POSTSONPAGE * ($navbar->currentpage - 1), $navbar->POSTSONPAGE, $tag)) {         //вывод ленты с выборкой по тегу либо всех статей
+} elseif ($lenta->getBlockPost($navbar->postsonpage * ($navbar->currentpage - 1), $navbar->postsonpage, $tag)) {         //вывод ленты с выборкой по тегу либо всех статей
     for ($i = 0; $i < count($lenta->title); $i++) {
         $lenta->getBlockTags($lenta->postid[$i]);
     }

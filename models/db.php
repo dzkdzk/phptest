@@ -370,8 +370,12 @@ class MySQLdata {
             $now = time();
             $sqlquery = "UPDATE `posts` SET `title` = '$title', `text` = '$text', `date` = '$now' where (posts.id=$postid and (posts.userid='$userid' or $role=$adminrole))";
             if ($sqlresult = $this->mysqli->query($sqlquery)) {
-                $this->addTagsToPost($postid, $tags);
-                $this->addFileToPost($postid, $files);
+                if ($tags) {
+                    $this->addTagsToPost($postid, $tags);
+                }
+                if ($files) {
+                    $this->addFileToPost($postid, $files);
+                }
             } else {
                 $error = 'Вы не можете редактировать эту статью.';
             }
@@ -392,8 +396,12 @@ class MySQLdata {
             $sqlquery = "insert into posts (userid,text,title,date) VALUES ('$userid','$text','$title', '$now')";
             $sqlresult = $this->mysqli->query($sqlquery);
             $res = $this->mysqli->insert_id;
-            $this->addTagsToPost($res, $tags);
-            $this->addFileToPost($res, $files);
+            if ($tags) {
+                $this->addTagsToPost($res, $tags);
+            }
+            if ($files) {
+                $this->addFileToPost($res, $files);
+            }
             return $res;
         }
 //   большой запрос, сразу с авторизацией (как вариант)                $sqlquery = "insert into posts (userid,text,title,date) select users.id,'$text' as text,'$title' as title, '$now' as date from users where users.id=$userid and users.sesshash='$hashsess'";

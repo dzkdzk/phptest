@@ -17,6 +17,7 @@ $isnewpost = getReqPOST('newpost');
 $uniq = getCookie('uniq');
 $role = getCookie('role');
 $editpost = getReqGET('id');
+$filenames=false;
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
     $uniq = gethash(time() + rand());
     setCookie('uniq', $uniq, time() + 315000000, COOKIEPATH, DOMAIN);

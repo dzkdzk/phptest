@@ -1,6 +1,6 @@
 <div class="detailBox">
-    <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
     <?php if ($commentblock or $userid) : ?>
+        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
         <div class="titleBox">
             <label>Комментарии</label>
         </div>

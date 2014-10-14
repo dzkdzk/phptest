@@ -74,19 +74,12 @@ function getReqPOSTbyName($name) {
 
 function healString($val) {
     if ($val) {
-        if (!is_numeric($val)) {
-            if (is_array($val)) {
-                foreach ($val as $key => $item) {
-                    if (is_numeric($item)) {
-                        continue;
-                    }
-                    $item = strip_tags($item);
-                    $item = htmlspecialchars($item);
-                    $val[$key] = $item;
-                }
-            } else {
-                $val = strip_tags($val);
-                $val = htmlspecialchars($val);
+        if (is_string($val)) {
+            $val = strip_tags($val);
+            $val = htmlspecialchars($val);
+        } elseif (is_array($val)) {
+            foreach ($val as $key => $item) {
+                $val[$key] = healString($item);
             }
         }
     }

@@ -107,7 +107,6 @@ class ArticlesBlock extends Articles implements getPosts {
 class SinglePost extends Articles implements postManage, commenting {
 
     function getSinglePost($postid) {                        //получение отдельной статьи
-
         $res = $this->db->getPost($postid);
         $this->title = $res['title'];
         $this->text = $res['text'];
@@ -128,23 +127,19 @@ class SinglePost extends Articles implements postManage, commenting {
     }
 
     function addPost($title, $text, $userid, $hashsess, $tags, $files) {                       // добавление новой статьи
-
         $res = $this->db->newPost($title, $text, $userid, $hashsess, $tags, $files);
         return $res;
     }
 
     function delPost($postid, $userid, $hashsess) {                                          //удаление статьи
-
         $this->db->erasePost($postid, $userid, $hashsess);
     }
 
     function newComment($postid, $userid, $sesshash, $text) {                                //новый комментарий
-
         $this->db->addComment($postid, $userid, $sesshash, $text);
     }
 
     function getBlockComments($postid) {                                                     //список всех комментов по статье
-
         $res = $this->db->getCommentByPost($postid);
         return $res;
     }
@@ -155,25 +150,39 @@ class Navigator {                                                               
 
     public $currentpage;
     public $postamount;
-    public $POSTSONPAGE = POSTSONPAGE;
+    public $postsonpage;
     public $pagesamount;
+    public $pagelinksamount = PAGELINKSAMOUNT;
+    public $pagelinks;                                                               //links array
     public $nextpage;
     public $prevpage;
     protected $db;
     public $dberror;
 
-    public function __construct($curpage, $tag, $text) {
+    public function __construct($curpage, $selpostsonpage, $tag, $text) {
         if ($curpage) {                                                                   //расчет параметров для пагинации
             $this->currentpage = $curpage;
         } else {
             $this->currentpage = 1;
         }
+        $this->postsonpage = $selpostsonpage;
         $this->db = new MySQLdata();
         $this->dberror = $this->db->error;
         $this->postamount = $this->db->getPostAmount($tag, $text);
-        $this->pagesamount = ceil($this->postamount / $this->POSTSONPAGE);
+        $this->pagesamount = ceil($this->postamount / $this->postsonpage);
         $this->nextpage = $this->currentpage + 1;
         $this->prevpage = $this->currentpage - 1;
+        $startlink = $this->currentpage - floor($this->pagelinksamount / 2);
+        if ($startlink > $this->pagesamount - $this->pagelinksamount) {
+            $startlink = $this->pagesamount - $this->pagelinksamount + 1;
+        }
+        if ($this->currentpage - floor($this->pagelinksamount / 2) < 1) {
+            $startlink = 1;
+        }
+        $realpagelinksamont = ($this->pagelinksamount <= $this->pagesamount) ? $this->pagelinksamount : $this->pagesamount;
+        for ($i = 0; $i < $realpagelinksamont; $i++) {
+            $this->pagelinks[] = $startlink + $i;
+        }
     }
 
 }
@@ -209,7 +218,7 @@ class Auth {
         $this->dberror = $this->db->error;
     }
 
-    function login($username, $password) {                                                
+    function login($username, $password) {
         $credentials = $this->db->getUserCredentials($username, $password);
         $this->userid = $credentials['userid'];
         $this->username = $credentials['username'];
@@ -269,7 +278,7 @@ class Auth {
 
 }
 
-class pages {                                                                     //страницы (Обо мне, ссылки, ...)
+class Pages {                                                                     //страницы (Обо мне, ссылки, ...)
 
     public $title;
     public $text;
@@ -290,6 +299,28 @@ class pages {                                                                   
     function updateContent($pageid, $title, $text, $userid, $hashsess) {
         $this->error = $this->db->savePage($pageid, $title, $text, $userid, $hashsess);
         return $this->error;
+    }
+
+}
+
+class Conf {
+
+    private static $db = null;
+    public static $dberror = null;
+
+    static function setConfDef($par, $val, $userid, $hashsess) {
+        self::$db = new MySQLdata();
+        self::$dberror = self::$db->error;
+        $val = preg_replace('%[^A-Za-zА-Яа-я0-9]%', '', $val);
+        if (self::$db->isUserAuthent($userid, $hashsess) == ADMIN_ROLE) {
+            $data = file_get_contents("..\config.php");
+            $pattern = "/define *\\([^)]*" . $par . "[^)]*\\) *;/i";
+            $replacement = "define('" . $par . "', '" . $val . "');";
+            $data = preg_replace($pattern, $replacement, $data);
+            $handle = fopen("..\config.php", "w+");
+            fwrite($handle, $data);
+            fclose($handle);
+        }
     }
 
 }

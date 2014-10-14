@@ -1,0 +1,7 @@
+<IfModule mod_rewrite.c>
+#RewriteEngine On
+#RewriteCond %{ENV:REDIRECT_FINISH} !^$
+#RewriteRule ^ - [L]
+#RewriteRule ^controller/(.*)$ http://phptest.com/$1 [R,L]
+#RewriteRule ^(.*)$ /controller/$1 [E=FINISH:1,L]
+</IfModule> 
