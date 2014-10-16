@@ -9,6 +9,7 @@ interface getPosts {
     function getBlockTags($postid);
 
     function getBlockPostByText($offset, $rowcount, $search);
+
 }
 
 interface postManage {
@@ -173,14 +174,14 @@ class Navigator {                                                               
         $this->nextpage = $this->currentpage + 1;
         $this->prevpage = $this->currentpage - 1;
         $startlink = $this->currentpage - floor($this->pagelinksamount / 2);
-        if ($startlink > $this->pagesamount - $this->pagelinksamount) {
-            $startlink = $this->pagesamount - $this->pagelinksamount + 1;
+        $realpagelinksamount = ($this->pagelinksamount <= $this->pagesamount) ? $this->pagelinksamount : $this->pagesamount;
+        if ($startlink > $this->pagesamount - $realpagelinksamount) {
+            $startlink = $this->pagesamount - $realpagelinksamount + 1;
         }
-        if ($this->currentpage - floor($this->pagelinksamount / 2) < 1) {
+        if ($this->currentpage - floor($realpagelinksamount / 2) <= 1) {
             $startlink = 1;
         }
-        $realpagelinksamont = ($this->pagelinksamount <= $this->pagesamount) ? $this->pagelinksamount : $this->pagesamount;
-        for ($i = 0; $i < $realpagelinksamont; $i++) {
+        for ($i = 0; $i < $realpagelinksamount; $i++) {
             $this->pagelinks[] = $startlink + $i;
         }
     }

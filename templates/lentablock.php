@@ -1,6 +1,6 @@
 <div class="col-sm-8 blog-main">
-    <?php if ($viewtype==1): ?><h2>Результаты поиска по тегу <a href='../controller/index.php?flush=1'>(Закрыть)</a></h2><?php endif ?>
-    <?php if ($viewtype==2): ?><h2>Результаты поиска: <?= $searchtext ?> <a href='../controller/index.php?flush=1'>(Закрыть)</a></h2><?php endif ?>
+    <?php if ($viewtype == 1): ?><h2>Результаты поиска по тегу <a href='../controller/index.php?flush=1'>(Закрыть)</a></h2><?php endif ?>
+    <?php if ($viewtype == 2): ?><h2>Результаты поиска: <?= $searchtext ?> <a href='../controller/index.php?flush=1'>(Закрыть)</a></h2><?php endif ?>
     <?php for ($i = 0; $i < count($lenta->title); $i++): ?>
         <div class="blog-post">
             <h2 class="blog-post-title"><a href='../controller/post.php?id=<?= $lenta->postid[$i] ?>'><?= $lenta->title[$i] ?></a></h2>

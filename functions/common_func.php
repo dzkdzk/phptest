@@ -15,9 +15,15 @@ function sCookie($cook, $val) {
 }
 
 function delCookie($cook) {
-
-    $res = setcookie($cook, "", time() - 3600, COOKIEPATH, DOMAIN);
-    return $res;
+    if (isset($_COOKIE[$cook])) {
+        unset($_COOKIE[$cook]);
+        setcookie($cook, null, -1, COOKIEPATH, DOMAIN);
+        return true;
+    } else {
+        return false;
+    }
+    //$res = setcookie($cook, "", time() - 3600, COOKIEPATH, DOMAIN);
+    //return $res;
 }
 
 function getReqFiles($files) {
