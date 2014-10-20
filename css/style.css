@@ -290,3 +290,51 @@ div .btn-save{
     float:right;
     position:relative;
 }
+#topbut {
+    position: fixed;    
+    bottom: 50%;   
+    background: transparent url(../images/top.png) no-repeat left top;  
+    background-size: 100% 100%;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+    display:none;
+}
+#loginbut {
+    position: fixed;    
+    bottom: 10%;   
+    background: transparent url(../images/login.png) no-repeat left top;  
+    background-size: 100% 100%;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+}
+#logoutbut {
+    position: fixed;    
+    bottom: 10%;   
+    background: transparent url(../images/logout.png) no-repeat left top;  
+    background-size: 100% 100%;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+}
+#sidemenubut {
+    position: fixed;    
+    top: 10%;   
+    background: transparent url(../images/menu.png) no-repeat left top;  
+    background-size: 100% 100%;
+    width: 64px;
+    height: 64px;
+    cursor: pointer;
+}
+#sidemenu {
+    position: fixed;   
+    background-color: #b1b0ca;
+    left:5%;
+    top: 10%;   
+    cursor: pointer;
+    display:none;
+    opacity: 0.95;
+    border-radius: 8px;
+    z-index: 10;
+}

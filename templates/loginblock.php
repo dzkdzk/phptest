@@ -18,7 +18,7 @@
 <?php else: ?>
     <form class="form-signin" action = "../controller/login.php" method = "post">
         <h4 class="form-signin-heading">Войдите, пожалуйста</h4>
-        <input name = "username" type = "text" class="input-block-level" placeholder="ваш логин">
+        <input id="loginusername" name = "username" type = "text" class="input-block-level" placeholder="ваш логин">
         <input name = "password" type = "password" class="input-block-level" placeholder="пароль">
         <input name = "loginbutton" type = "submit" class="btn btn-large btn-primary" value = "Войти">
         <label class="checkbox"><input name = "register" type = "checkbox">Новый пользователь</label>
