@@ -35,6 +35,7 @@ class Articles {
     protected $datastruct;
     public $title;
     public $author;
+    public $date;    
     public $text;
     public $postid;
     public $tags;
