@@ -4,7 +4,7 @@
 error_reporting(E_ALL & ~E_NOTICE);
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
-include_once(ROOT . "/models/classes.php");
+include_once ('../models/autoload.php');
 $pagetitle = 'Редактирование статьи';
 $username = getCookie('username');
 $userid = getCookie('userid');

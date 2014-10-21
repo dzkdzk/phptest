@@ -2,7 +2,7 @@
 
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
-include_once(ROOT . "/models/classes.php");
+include_once ('../models/autoload.php');
 $pagetitle = 'Управление пользователями';
 $username = getCookie('username');
 $userid = getCookie('userid');

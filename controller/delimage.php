@@ -7,7 +7,7 @@ $file = getReqPost('img');
 $postid = getReqPost('postid');
 $userid = getReqPost('userid');
 $hashsess = getReqPost('hashsess');
-$db = new MySQLdata();
+$db = new Db();
 $error = $db->delFileFromPost($postid, $userid, $hashsess, $file);
 if ($error) {
     echo $error;

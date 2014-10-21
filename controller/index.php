@@ -4,8 +4,8 @@ error_reporting(E_ALL & ~E_NOTICE); //удалить
 //вывод ленты со статьями с предпросмотром
 
 include_once("../config.php");
+include_once ('../models/autoload.php');
 include_once(ROOT . "/functions/common_func.php");
-include_once(ROOT . "/models/classes.php");
 $pagetitle = 'Главная страница';
 $username = getCookie('username');
 $userid = getCookie('userid');
