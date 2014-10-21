@@ -60,7 +60,7 @@ if ($isflush) {
     $searchtext = false;
     $viewtype = false;
 }
-$navbar = new navigator($curpage, $selpostsonpage, $tag, $searchtext);        //расчет параметров для пагинации
+$navbar = new Navigator($curpage, $selpostsonpage, $tag, $searchtext);        //расчет параметров для пагинации
 if ($viewtype == 2) {                                        //вывод ленты по найденному текста
     $lenta->getBlockPostByText($navbar->postsonpage * ($navbar->currentpage - 1), $navbar->postsonpage, $searchtext);
     for ($i = 0; $i < count($lenta->title); $i++) {

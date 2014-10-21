@@ -71,7 +71,7 @@ if ($postcurpage) {                                               //ajax get pos
     sCookie('curpage', $postcurpage);
     $curpage = $postcurpage;
 
-    $navbar = new navigator($curpage, $selpostsonpage, $tag, $searchtext);        //расчет параметров для пагинации
+    $navbar = new Navigator($curpage, $selpostsonpage, $tag, $searchtext);        //расчет параметров для пагинации
     if ($viewtype == 2) {                                        //вывод ленты по найденному текста
         $lenta->getBlockPostByText($selpostsonpage * ($curpage - 1), $selpostsonpage, $searchtext);
         for ($i = 0; $i < count($lenta->title); $i++) {
