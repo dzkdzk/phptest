@@ -9,7 +9,6 @@ interface getPosts {
     function getBlockTags($postid);
 
     function getBlockPostByText($offset, $rowcount, $search);
-
 }
 
 interface postManage {
@@ -35,7 +34,7 @@ class Articles {
     protected $datastruct;
     public $title;
     public $author;
-    public $date;    
+    public $date;
     public $text;
     public $postid;
     public $tags;
@@ -203,6 +202,13 @@ class Log {                                                                     
         $this->db->recordLog($userid, $uniq, $server);
     }
 
+    static function addtofile($errdescr, $basename) {
+        $file = ROOT . "/" . LOGFILE;
+        $ip = healString($_SERVER['REMOTE_ADDR']);
+        $logstr = date("d.m.y H:i:s") . "; " . $errdescr . "; " . $ip . "; " . $basename . "\n";
+        file_put_contents($file, $logstr, FILE_APPEND | LOCK_EX);
+    }
+
 }
 
 class Auth {
@@ -316,8 +322,10 @@ class Conf {
         $val = preg_replace('%[^A-Za-zА-Яа-я0-9]%', '', $val);
         if (self::$db->isUserAuthent($userid, $hashsess) == ADMIN_ROLE) {
             $data = file_get_contents("..\config.php");
-            $pattern = "/define *\\([^)]*" . $par . "[^)]*\\) *;/i";
-            $replacement = "define('" . $par . "', '" . $val . "');";
+            $pattern = "/define *\\([^)]*" . $par . "[^)]*\\) *;
+/i";
+            $replacement = "define('" . $par . "', '" . $val . "');
+";
             $data = preg_replace($pattern, $replacement, $data);
             $handle = fopen("..\config.php", "w+");
             fwrite($handle, $data);

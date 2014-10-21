@@ -34,6 +34,7 @@
             return false;
         });
         $('#loginbut').click(function () {
+            $('#loginform').tooltip('show');
             $('#loginusername').focus();
             return false;
         });

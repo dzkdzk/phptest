@@ -12,7 +12,7 @@ $saveUserInfo = getReqPost('saveUserInfo');
 $email = getReqPost('email');
 $fullname = getReqPost('fullname');
 $role = getCookie('role');
-
+if ($error) {Log::addtofile($error, basename(__FILE__));} //запись в логфайл ошибки
 delCookie('error');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');

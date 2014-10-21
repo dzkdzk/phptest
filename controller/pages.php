@@ -14,7 +14,7 @@ $ispagesave = getReqPOST('PageSave');
 $title = getReqPOST('title');
 $text = getReqPOST('text');
 $isedit = getReqGet('edit');
-
+if ($error) {Log::addtofile($error, basename(__FILE__));} //запись в логфайл ошибки
 delCookie('error');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');

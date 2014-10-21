@@ -1,6 +1,6 @@
 <?php
 
-//вывод ленты со статьями с предпросмотром
+//вывод ленты со статьями с предпросмотром (JQuery)
 
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
@@ -24,7 +24,9 @@ if ($selpostsonpage) {
 } else {
     $selpostsonpage = POSTSONPAGE;
 }
-
+if ($error) {
+    Log::addtofile($error, basename(__FILE__)); //запись в логфайл ошибки
+} 
 delCookie('error');                          //очищаем значение ошибки
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
     $uniq = gethash(time() + rand());

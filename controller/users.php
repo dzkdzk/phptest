@@ -15,7 +15,7 @@ $targetnewrole = (getReqPost('role')) ? EDITOR_ROLE : USER_ROLE;
 $targetfullname = getReqPost('fullname');
 $isdeluser = getReqPost('del_id');
 $role = getCookie('role');
-
+if ($error) {Log::addtofile($error, basename(__FILE__));} //запись в логфайл ошибки
 delCookie('error');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');

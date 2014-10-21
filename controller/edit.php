@@ -1,6 +1,8 @@
-<?php                                   //редактирование статьи
+<?php
 
-include_once("../config.php");  
+//редактирование статьи
+error_reporting(E_ALL & ~E_NOTICE);
+include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
 include_once(ROOT . "/models/classes.php");
 $pagetitle = 'Редактирование статьи';
@@ -10,6 +12,9 @@ $postauthorid = getCookie('userid');
 $postauthorname = getCookie('username');
 $error = getCookie('error');
 delCookie('error');
+if ($error) {
+    Log::addtofile($error, basename(__FILE__));
+} //запись в логфайл ошибки
 $hashsess = getCookie('hashsess');
 $ispostsave = getReqPOST('SavePost');
 $delpost = getReqPOST('del_id');
@@ -17,7 +22,7 @@ $isnewpost = getReqPOST('newpost');
 $uniq = getCookie('uniq');
 $role = getCookie('role');
 $editpost = getReqGET('id');
-$filenames=false;
+$filenames = false;
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
     $uniq = gethash(time() + rand());
     setCookie('uniq', $uniq, time() + 315000000, COOKIEPATH, DOMAIN);

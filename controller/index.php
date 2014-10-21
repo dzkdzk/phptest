@@ -1,5 +1,6 @@
 <?php
 
+error_reporting(E_ALL & ~E_NOTICE); //удалить
 //вывод ленты со статьями с предпросмотром
 
 include_once("../config.php");
@@ -24,7 +25,9 @@ if ($selpostsonpage) {
 } else {
     $selpostsonpage = POSTSONPAGE;
 }
-
+if ($error) {
+    Log::addtofile($error, basename(__FILE__));    //запись в логфайл ошибки
+}
 delCookie('error');                          //очищаем значение ошибки
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
     $uniq = gethash(time() + rand());

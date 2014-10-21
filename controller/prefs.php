@@ -17,7 +17,9 @@ $role = getCookie('role');
 
 $inppagelinksamount = getReqPost('inppagelinksamount');
 $inpreviewlength = getReqPost('inpreviewlength');
-
+if ($error) {
+    Log::addtofile($error, basename(__FILE__));    //запись в логфайл ошибки
+} 
 delCookie('error');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');

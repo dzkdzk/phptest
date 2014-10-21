@@ -16,9 +16,9 @@
         </ul>
     </div>
 <?php else: ?>
-    <form class="form-signin" action = "../controller/login.php" method = "post">
+    <form id="loginform" data-placement="left" data-toggle="tooltip" data-original-title="Введите логин и пароль" class="form-signin" action = "../controller/login.php" method = "post">
         <h4 class="form-signin-heading">Войдите, пожалуйста</h4>
-        <input id="loginusername" name = "username" type = "text" class="input-block-level" placeholder="ваш логин">
+        <input id="loginusername" onchange="$('#loginform').tooltip('destroy');" name = "username" type = "text" class="input-block-level" placeholder="ваш логин">
         <input name = "password" type = "password" class="input-block-level" placeholder="пароль">
         <input name = "loginbutton" type = "submit" class="btn btn-large btn-primary" value = "Войти">
         <label class="checkbox"><input name = "register" type = "checkbox">Новый пользователь</label>
