@@ -22,7 +22,7 @@ include_once(ROOT . "/templates/messageblock.php");
                     <div id="images">
                         <div><label>Изображения: </label></div>
                         <?php for ($i = 0; $i < count($fullpost->files); $i++) : ?>
-                            <?php $filepath = uploaddir . $fullpost->files[$i]['filename'] ?>
+                            <?php $filepath = UPLOADDIR . $fullpost->files[$i]['filename'] ?>
                             <img title="удалить?" class="img-thumbnail postimages" id="img<?= $i ?>" onclick="return confirm('Удалить рисунок?') ? delImage(this.id, $(this).attr('src')) : null;" src="../<?= $filepath ?>">
                         <?php endfor ?>
                     </div>

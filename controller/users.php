@@ -41,5 +41,6 @@ if ($role == ADMIN_ROLE) {   //выбираем из базы данные вс�
     exit();
 }
 include_once(ROOT . "/templates/header.php" );
+include_once(ROOT . "/templates/leftbarblock.php");
 include_once(ROOT . "/templates/template_users.php" );
 include_once(ROOT . "/templates/footer.php");

@@ -32,5 +32,6 @@ if ($userid and $hashsess) {
     $user->getAdvUserInfo($userid, $hashsess);   //выборка всех данных о пользователе
 }
 include_once(ROOT . "/templates/header.php");
+include_once(ROOT . "/templates/leftbarblock.php");
 include_once(ROOT . "/templates/template_my.php");
 include_once(ROOT . "/templates/footer.php");

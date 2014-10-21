@@ -9,5 +9,3 @@
         <title><?= $pagetitle ?></title>
     </head>
     <body>
-        <?php include_once(ROOT . "/templates/leftbarblock.php"); ?>
-

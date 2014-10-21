@@ -69,7 +69,7 @@ if ($delpost) {                                          //при удалени
         }
         if ($error == UPLOAD_ERR_OK) {                               //копирование из темпа в аплоад
             $newfilename = getHash(time() . rand()) . '.' . substr(strrchr($name, '.'), 1);
-            move_uploaded_file($tmp_name, ROOT . uploaddir . $newfilename);
+            move_uploaded_file($tmp_name, ROOT . UPLOADDIR . $newfilename);
             $filenames[] = $newfilename;                              //массив имен файлов для обработки
         }
     }

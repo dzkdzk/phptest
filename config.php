@@ -16,7 +16,7 @@ define('PREVIEWLENGTH', '500');
 define('POSTSONPAGE', '12');
 define('PAGELINKSAMOUNT', '5');
 define('SALT', 'saltlake');
-define('uploaddir', '/uploads/');
+define('UPLOADDIR', '/uploads/');
 define('ADMIN_ROLE', 1);
 define('EDITOR_ROLE', 2);
 define('USER_ROLE', 3);

@@ -87,6 +87,7 @@ if ($postcurpage) {                                               //ajax get pos
     echo json_encode($poststruct);
 } else {
     include_once(ROOT . "/templates/header.php");
+    include_once(ROOT . "/templates/leftbarblock.php");
     include_once(ROOT . "/templates/template_index_2.php");
     include_once(ROOT . "/templates/footer.php");
 }

@@ -42,5 +42,6 @@ if ($savePrefs) {                             //апдейт конфига
 }
 
 include_once(ROOT . "/templates/header.php");
+include_once(ROOT . "/templates/leftbarblock.php");
 include_once(ROOT . "/templates/template_prefs.php");
 include_once(ROOT . "/templates/footer.php");

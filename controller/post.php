@@ -28,6 +28,7 @@ $fullpost->getSinglePost($postid);                 //получаем данны
 $commentblock = $fullpost->getBlockComments($postid); //получаем комментарии статьи
 
 include_once(ROOT . "/templates/header.php");
+include_once(ROOT . "/templates/leftbarblock.php");
 include_once(ROOT . "/templates/template_post.php");
 include_once(ROOT . "/templates/footer.php");
 

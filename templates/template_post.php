@@ -16,7 +16,7 @@ include_once(ROOT . "/templates/messageblock.php");
                     <h2 class="blog-post-title"><a href = '../controller/post.php?id=<?= $fullpost->postid ?>'><?= $fullpost->title ?></a></h2>
                     <div><?= nl2br($fullpost->text) ?></div>
                     <?php for ($i = 0; $i < count($fullpost->files); $i++) : ?>
-                        <?php $filepath = uploaddir . $fullpost->files[$i]['filename'] ?>
+                        <?php $filepath = UPLOADDIR . $fullpost->files[$i]['filename'] ?>
                         <!-- Modal -->                                                            <!--вариант лайтбокса для изображений-->
                         <div id="myModal<?= $i ?>" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
                             <div class="modal-dialog">

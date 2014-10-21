@@ -42,5 +42,6 @@ if ($ispagesave) {         // сохранение редактирования
 }
 
 include_once(ROOT . "/templates/header.php");
+include_once(ROOT . "/templates/leftbarblock.php");
 include_once(ROOT . "/templates/template_pages.php");
 include_once(ROOT . "/templates/footer.php");

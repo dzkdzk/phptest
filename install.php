@@ -1,5 +1,6 @@
 <?php include_once("config.php"); ?>
-<?php $pagetitle = 'Install DB';
+<?php
+$pagetitle = 'Install DB';
 include_once(ROOT . "/templates/header.php");
 ?>
 <?php
@@ -41,6 +42,12 @@ if (isset($_POST['start'])) {
             }
         }
     }
+    if (preg_match("/linux|unix|macos|hpux|bsd/i", php_uname("s"))) {
+        chmod ( ROOT . UPLOADDIR, '0777' );
+    } 
+    unlink("demo.sql");
+    unlink("empty.sql");
+    unlink("install.php");
     echo 'Installing done!';
     exit;
 }

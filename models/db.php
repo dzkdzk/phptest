@@ -348,7 +348,7 @@ class MySQLdata {
                 $postsuserid = $row['userid'];
             }
             if ($userid == $postsuserid or $role == ADMIN_ROLE) {
-                unlink(ROOT . uploaddir . $file);
+                unlink(ROOT . UPLOADDIR . $file);
                 $sqlquery = "delete from images where postid = '$postid' and filename='$file'";
                 $sqlresult = $this->mysqli->query($sqlquery);
             } else {
@@ -425,7 +425,7 @@ class MySQLdata {
         $sqlresult = $this->mysqli->query($sqlquery);
         if ($sqlresult->num_rows > 0) {
             while ($row = $sqlresult->fetch_assoc()) {
-                unlink(ROOT . uploaddir . $row['filename']);
+                unlink(ROOT . UPLOADDIR . $row['filename']);
             }
         }
         if ($userid == $postsuserid or $role == ADMIN_ROLE) {

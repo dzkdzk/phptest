@@ -71,5 +71,6 @@ if ($viewtype == 2) {                                        //вывод лен
     }
 }
 include_once(ROOT . "/templates/header.php");
+include_once(ROOT . "/templates/leftbarblock.php");
 include_once(ROOT . "/templates/template_index_1.php");
 include_once(ROOT . "/templates/footer.php");
