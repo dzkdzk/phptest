@@ -1,5 +1,21 @@
 <?php
 
+function getSession($sess) {
+    $res = FALSE;
+    if (isset($_SESSION[$sess])) {
+        $res = $_SESSION[$sess];
+    }
+    return $res;
+}
+
+function setSession($sess, $val) {
+    $_SESSION[$sess] = $val;
+}
+function delSession($sess) {
+    if (isset($_SESSION[$sess])) {
+        unset($_SESSION[$sess]);
+    }
+}
 function getCookie($cook) {
     $res = FALSE;
     if (isset($_COOKIE[$cook])) {

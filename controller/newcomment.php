@@ -1,10 +1,10 @@
 <?php
-
+session_start();
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
 include_once ('../models/autoload.php');
-$userid = getCookie('userid');
-$hashsess = getCookie('hashsess');
+$userid = getSession('userid');
+$hashsess = getSession('hashsess');
 $postid = getReqPost('postid');
 $commenttext = getReqPost('comment');
 $fullpost = new SinglePost();

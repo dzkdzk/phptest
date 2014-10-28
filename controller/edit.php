@@ -2,25 +2,26 @@
 
 //редактирование статьи
 error_reporting(E_ALL & ~E_NOTICE);
+session_start();
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
 include_once ('../models/autoload.php');
 $pagetitle = 'Редактирование статьи';
-$username = getCookie('username');
-$userid = getCookie('userid');
-$postauthorid = getCookie('userid');
-$postauthorname = getCookie('username');
-$error = getCookie('error');
-delCookie('error');
+$username = getSession('username');
+$userid = getSession('userid');
+$postauthorid = getSession('userid');
+$postauthorname = getSession('username');
+$error = getSession('error');
+delSession('error');
 if ($error) {
     Log::addtofile($error, basename(__FILE__));
 } //запись в логфайл ошибки
-$hashsess = getCookie('hashsess');
+$hashsess = getSession('hashsess');
 $ispostsave = getReqPOST('SavePost');
 $delpost = getReqPOST('del_id');
 $isnewpost = getReqPOST('newpost');
 $uniq = getCookie('uniq');
-$role = getCookie('role');
+$role = getSession('role');
 $editpost = getReqGET('id');
 $filenames = false;
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
@@ -54,17 +55,17 @@ if ($delpost) {                                          //при удалени
         }
         if ($type != IMAGETYPE_GIF and $type != IMAGETYPE_JPEG and $type != IMAGETYPE_PNG) {
             $error = 'Неверный формат изображения.';               //если не изображение
-            sCookie('error', $error);
+            sSession('error', $error);
             continue;
         }
         if ($width < 32 or $height < 32) {                         //если мало точек
             $error = 'Размер изображения слишком мал.';
-            sCookie('error', $error);
+            sSession('error', $error);
             continue;
         }
         if (($files["size"][$key] > 1024 * 3 * 1024) and ( $files["size"][$key] < 1024)) {
             $error = 'Размер файл должен быть между 1 и 3000 КБ.';  //если размер файла необычный
-            sCookie('error', $error);
+            sSession('error', $error);
             continue;
         }
         if ($error == UPLOAD_ERR_OK) {                               //копирование из темпа в аплоад
@@ -78,7 +79,7 @@ if ($delpost) {                                          //при удалени
     } else {
         $error = $fullpost->editPost($postid, $posttitle, $posttext, $postauthorid, $hashsess, $tagids, $filenames);
         if ($error) {
-            sCookie('error', $error);
+            sSession('error', $error);
         }
     }
     header('Location: ../controller/post.php?id=' . $postid);

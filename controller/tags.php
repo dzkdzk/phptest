@@ -1,7 +1,7 @@
 <?php
-
+session_start();
 include_once("../config.php");
-include_once(ROOT . "/models/db.php");
+include_once ('../models/autoload.php');
 include_once(ROOT . "/functions/common_func.php");
 $tagval = getReqGET('tagval');
 $db = new DbAccess();

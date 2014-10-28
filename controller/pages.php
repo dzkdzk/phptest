@@ -1,21 +1,21 @@
 <?php                                      //вывод и редактирование страниц (Обо мне, ссылки и т.д.)
-
+session_start();
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
 include_once ('../models/autoload.php');
 $pagetitle = 'Редактирование страниц';
-$username = getCookie('username');
-$userid = getCookie('userid');
-$hashsess = getCookie('hashsess');
-$error = getCookie('error');
-$role = getCookie('role');
+$username = getSession('username');
+$userid = getSession('userid');
+$hashsess = getSession('hashsess');
+$error = getSession('error');
+$role = getSession('role');
 $pageid = getReqGET('id');
 $ispagesave = getReqPOST('PageSave');
 $title = getReqPOST('title');
 $text = getReqPOST('text');
 $isedit = getReqGet('edit');
 if ($error) {Log::addtofile($error, basename(__FILE__));} //запись в логфайл ошибки
-delCookie('error');
+delSession('error');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
@@ -31,7 +31,7 @@ if ($ispagesave) {         // сохранение редактирования
     $pageid = getReqPOST('pageid');
     $error = $page->updateContent($pageid, $title, $text, $userid, $hashsess);
     if ($error) {
-        sCookie('error', $error);
+        sSession('error', $error);
     }
     header('Location: ../controller/pages.php?id=' . $pageid);
     exit();

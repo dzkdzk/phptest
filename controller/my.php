@@ -1,19 +1,19 @@
 <?php                                    //личный кабинет, вывод и редактирование своих данных
-
+session_start();
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
 include_once ('../models/autoload.php');
 $pagetitle = 'Кабинет пользователя';
-$username = getCookie('username');
-$userid = getCookie('userid');
-$hashsess = getCookie('hashsess');
-$error = getCookie('error');
+$username = getSession('username');
+$userid = getSession('userid');
+$hashsess = getSession('hashsess');
+$error = getSession('error');
 $saveUserInfo = getReqPost('saveUserInfo');
 $email = getReqPost('email');
 $fullname = getReqPost('fullname');
-$role = getCookie('role');
+$role = getSession('role');
 if ($error) {Log::addtofile($error, basename(__FILE__));} //запись в логфайл ошибки
-delCookie('error');
+delSession('error');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор

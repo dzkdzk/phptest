@@ -1,22 +1,26 @@
-<?php                                            //вывод и редактирование пользователей
+<?php
 
+//вывод и редактирование пользователей
+session_start();
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
 include_once ('../models/autoload.php');
 $pagetitle = 'Управление пользователями';
-$username = getCookie('username');
-$userid = getCookie('userid');
-$hashsess = getCookie('hashsess');
-$error = getCookie('error');
+$username = getSession('username');
+$userid = getSession('userid');
+$hashsess = getSession('hashsess');
+$error = getSession('error');
 $saveUserInfo = getReqPost('saveUserInfo');
 $targetemail = getReqPost('email');
 $targetuserid = getReqPOST('userid');
 $targetnewrole = (getReqPost('role')) ? EDITOR_ROLE : USER_ROLE;
 $targetfullname = getReqPost('fullname');
 $isdeluser = getReqPost('del_id');
-$role = getCookie('role');
-if ($error) {Log::addtofile($error, basename(__FILE__));} //запись в логфайл ошибки
-delCookie('error');
+$role = getSession('role');
+if ($error) {
+    Log::addtofile($error, basename(__FILE__));
+} //запись в логфайл ошибки
+delSession('error');
 $postid = getReqGET('id');
 $uniq = getCookie('uniq');
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор

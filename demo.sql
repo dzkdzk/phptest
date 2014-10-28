@@ -453,11 +453,11 @@ DROP TABLE IF EXISTS `users`;
 CREATE TABLE IF NOT EXISTS `users` (
   `id` int(10) unsigned NOT NULL AUTO_INCREMENT,
   `login` varchar(20) COLLATE utf8_unicode_ci NOT NULL,
-  `fullname` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `fullname` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   `passhash` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `sesshash` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `role` int(10) unsigned NOT NULL DEFAULT '3',
-  `email` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `email` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=MyISAM  DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci AUTO_INCREMENT=26 ;
 

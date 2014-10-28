@@ -1,33 +1,33 @@
 <?php
 
 //вывод ленты со статьями с предпросмотром (Javascript)
-
+session_start();
 include_once("../config.php");
 include_once(ROOT . "/functions/common_func.php");
 include_once ('../models/autoload.php');
 $pagetitle = 'Главная страница';
-$username = getCookie('username');
-$userid = getCookie('userid');
+$username = getSession('username');
+$userid = getSession('userid');
 $curpage = getReqGET('curpage');
 $tag = getReqGET('tag');
 $uniq = getCookie('uniq');
-$error = getCookie('error');
-$role = getCookie('role');
+$error = getSession('error');
+$role = getSession('role');
 $searchtext = getReqGET('search');
 $isflush = getReqGET('flush');
 $selpostsonpage = getReqPOST('selpostsonpage');
-$cookpostsonpage = getCookie('postsonpage');
+$sesspostsonpage = getSession('postsonpage');
 if ($selpostsonpage) {
-    sCookie('postsonpage', $selpostsonpage);
-} elseif ($cookpostsonpage) {
-    $selpostsonpage = $cookpostsonpage;
+    sSession('postsonpage', $selpostsonpage);
+} elseif ($sesspostsonpage) {
+    $selpostsonpage = $sesspostsonpage;
 } else {
     $selpostsonpage = POSTSONPAGE;
 }
 if ($error) {
     Log::addtofile($error, basename(__FILE__)); //запись в логфайл ошибки
 } 
-delCookie('error');                          //очищаем значение ошибки
+delSession('error');                          //очищаем значение ошибки
 if (!$uniq) {                                //оставляем пользователю уник. идентификатор
     $uniq = gethash(time() + rand());
     setCookie('uniq', $uniq, time() + 315000000, COOKIEPATH, DOMAIN);
@@ -36,25 +36,25 @@ $server = healString($_SERVER);
 $loger = new Log();
 $loger->record($userid, $uniq, $server);     //делаем запись о пользователе в лог
 $lenta = new ArticlesBlock();
-$viewtype = getCookie('viewtype');
+$viewtype = getSession('viewtype');
 if ($tag) {                                  //логика по различным отображениям ленты: по тегам, по поиску, подряд
-    sCookie('tag', $tag);
+    sSession('tag', $tag);
     $viewtype = 1;
-    sCookie('viewtype', 1);
+    sSession('viewtype', 1);
 } else {
-    $tag = getCookie('tag');
+    $tag = getSession('tag');
 }
 if ($searchtext) {
-    sCookie('search', $searchtext);
+    sSession('search', $searchtext);
     $viewtype = 2;
-    sCookie('viewtype', 2);
+    sSession('viewtype', 2);
 } else {
-    $searchtext = getCookie('search');
+    $searchtext = getSession('search');
 }
 if ($isflush) {
-    delCookie('viewtype');
-    delCookie('tag');
-    delCookie('search');
+    delSession('viewtype');
+    delSession('tag');
+    delSession('search');
     $tag = false;
     $searchtext = false;
     $viewtype = false;
