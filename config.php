@@ -5,7 +5,8 @@ define('DB_LOGIN', 'root');
 define('DB_PASSWORD', '1234');
 define('DB_NAME', 'blogdb');
 define('ROOT', $_SERVER['DOCUMENT_ROOT']);
-define('DOMAIN', $_SERVER['HTTP_HOST']);
+define('DOMAIN', preg_replace("/:(\\d)+/i", "", $_SERVER['HTTP_HOST']));
+
 
 define('TIMEZONE', '3');
 define('COOKIEPATH', '/');
