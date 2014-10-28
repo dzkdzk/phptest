@@ -55,17 +55,17 @@ if ($delpost) {                                          //при удалени
         }
         if ($type != IMAGETYPE_GIF and $type != IMAGETYPE_JPEG and $type != IMAGETYPE_PNG) {
             $error = 'Неверный формат изображения.';               //если не изображение
-            sSession('error', $error);
+            setSession('error', $error);
             continue;
         }
         if ($width < 32 or $height < 32) {                         //если мало точек
             $error = 'Размер изображения слишком мал.';
-            sSession('error', $error);
+            setSession('error', $error);
             continue;
         }
         if (($files["size"][$key] > 1024 * 3 * 1024) and ( $files["size"][$key] < 1024)) {
             $error = 'Размер файл должен быть между 1 и 3000 КБ.';  //если размер файла необычный
-            sSession('error', $error);
+            setSession('error', $error);
             continue;
         }
         if ($error == UPLOAD_ERR_OK) {                               //копирование из темпа в аплоад
@@ -79,7 +79,7 @@ if ($delpost) {                                          //при удалени
     } else {
         $error = $fullpost->editPost($postid, $posttitle, $posttext, $postauthorid, $hashsess, $tagids, $filenames);
         if ($error) {
-            sSession('error', $error);
+            setSession('error', $error);
         }
     }
     header('Location: ../controller/post.php?id=' . $postid);

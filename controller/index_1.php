@@ -18,7 +18,7 @@ $isflush = getReqGET('flush');
 $selpostsonpage = getReqPOST('selpostsonpage');
 $sesspostsonpage = getSession('postsonpage');
 if ($selpostsonpage) {
-    sSession('postsonpage', $selpostsonpage);
+    setSession('postsonpage', $selpostsonpage);
 } elseif ($sesspostsonpage) {
     $selpostsonpage = $sesspostsonpage;
 } else {
@@ -38,16 +38,16 @@ $loger->record($userid, $uniq, $server);     //делаем запись о по
 $lenta = new ArticlesBlock();
 $viewtype = getSession('viewtype');
 if ($tag) {                                  //логика по различным отображениям ленты: по тегам, по поиску, подряд
-    sSession('tag', $tag);
+    setSession('tag', $tag);
     $viewtype = 1;
-    sSession('viewtype', 1);
+    setSession('viewtype', 1);
 } else {
     $tag = getSession('tag');
 }
 if ($searchtext) {
-    sSession('search', $searchtext);
+    setSession('search', $searchtext);
     $viewtype = 2;
-    sSession('viewtype', 2);
+    setSession('viewtype', 2);
 } else {
     $searchtext = getSession('search');
 }

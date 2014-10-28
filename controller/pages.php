@@ -31,7 +31,7 @@ if ($ispagesave) {         // сохранение редактирования
     $pageid = getReqPOST('pageid');
     $error = $page->updateContent($pageid, $title, $text, $userid, $hashsess);
     if ($error) {
-        sSession('error', $error);
+        setSession('error', $error);
     }
     header('Location: ../controller/pages.php?id=' . $pageid);
     exit();
