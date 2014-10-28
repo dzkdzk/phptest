@@ -7,7 +7,7 @@ $file = getReqPost('img');
 $postid = getReqPost('postid');
 $userid = getReqPost('userid');
 $hashsess = getReqPost('hashsess');
-$db = new Db();
+$db = new DbAccess();
 $error = $db->delFileFromPost($postid, $userid, $hashsess, $file);
 if ($error) {
     echo $error;

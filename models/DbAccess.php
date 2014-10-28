@@ -1,6 +1,6 @@
-<?php
+<?php //работа с MySQL
 
-class MySQLdata {
+class DbAccess {
 
     protected $mysqli;
     public $error;

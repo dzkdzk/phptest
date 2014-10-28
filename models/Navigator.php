@@ -20,7 +20,7 @@ class Navigator {                                                               
             $this->currentpage = 1;
         }
         $this->postsonpage = $selpostsonpage;
-        $this->db = new Db();
+        $this->db = new DbAccess();
         $this->dberror = $this->db->error;
         $this->postamount = $this->db->getPostAmount($tag, $text);
         $this->pagesamount = ceil($this->postamount / $this->postsonpage);

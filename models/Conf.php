@@ -6,7 +6,7 @@ class Conf {
     public static $dberror = null;
 
     static function setConfDef($par, $val, $userid, $hashsess) {
-        self::$db = new Db();
+        self::$db = new DbAccess();
         self::$dberror = self::$db->error;
         $val = preg_replace('%[^A-Za-zА-Яа-я0-9]%', '', $val);
         if (self::$db->isUserAuthent($userid, $hashsess) == ADMIN_ROLE) {

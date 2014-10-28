@@ -8,7 +8,7 @@ class Pages {                                                                   
     protected $db;
 
     function __construct() {
-        $this->db = new Db();
+        $this->db = new DbAccess();
         $this->dberror = $this->db->error;
     }
 
